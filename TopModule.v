@@ -16,11 +16,13 @@ input [7:0] in_temperature // Hyper Parameter for tuning
     reg [(NUMBER_OF_BOOLEAN_VARIABLES+(NUMBER_OF_INTEGER_VARIABLES*BIT_WIDTH_OF_INTEGER_VARIABLE))-1:0] initial_assigmnets;
  
     // sizes buffer will determine the parameter (constants values later)
-    
+   
     // read the formula from the text file generated from the pre-processing 
+    initial
+    begin
+     $fread(testfile,"pre_processing.txt");
+    end
     
-    // control unit here to pass different clauses for the solver instances at every clock cycle
-         
-    Solver solver(formula[1],in_pls0,in_temperature,initial_assigmnets);
-    
+    // control unit here to pass different clauses for the solver instances at every clock cycle     
+    Solver solver(formula[i],in_pls0,in_temperature,initial_assigmnets);
 endmodule
