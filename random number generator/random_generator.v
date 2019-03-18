@@ -33,13 +33,13 @@ wire feedback = random[7] ^ random[5] ^ random[4] ^ random[3]; // this is the st
 // in LFSR from Xilinx .
 assign out_random = random_done; // just assign the value of reg to wire 
 
-always @ (posedge in_clock or posedge in_reset)
+always @ (posedge in_clock)
 begin
   // if in_reset= 1 , the module reads the seed value and assign it as initial value to the random variable , 
   // it should be 1 only at beginning and 0 after beginning .
  if (in_reset) // read the seed value
  begin
-  random <= in_seed; //assign seed as initial value to the random variable
+  random = in_seed; //assign seed as initial value to the random variable
  end
   // it should be 1 if you want new numbers to be generated every posetive clock edge .
   // if 0 , the output remains like the previous one.
