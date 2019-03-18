@@ -24,7 +24,7 @@ module test ;
   .in_min(min),
   .in_max(max),
   .in_seed(seed), 
-  .out_rnd(rnd)
+  .out_random(rnd)
  );
   
  initial begin
@@ -37,11 +37,11 @@ module test ;
   // Initialize Inputs
   // min and max (range)
   // negative , negative
-  //min = -8'd 20;
-  //max = -8'd 10;
-  // negative , positive
   min = -8'd 20;
-  max = 8'd 2;
+  max = -8'd 10;
+  // negative , positive
+  //min = -8'd 20;
+  //max = 8'd 2;
   // posotive , positive
   //min = 8'd 20;
   //max = 8'd 26;
@@ -55,7 +55,7 @@ module test ;
   enable = 0;
   // Wait 100 ns for global reset to finish
   #100;
-      seed = 8'd 2;
+      seed = 8'd 1;
       reset = 1;
       enable=1;
   #200;

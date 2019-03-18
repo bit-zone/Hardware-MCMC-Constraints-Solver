@@ -24,14 +24,14 @@ module RandomGenerator(
     // specifies the maximum value of the target range.
     input wire [7:0] in_seed, // initial value  , CANNOT be zero or negative
   //ouputs
-    output wire signed [7:0] out_rnd 
+    output wire signed [7:0] out_random 
     // the random number 
     );
 
 reg signed[7:0] random, random_next, random_done , incremented_max; // temporary variables 
 wire feedback = random[7] ^ random[5] ^ random[4] ^ random[3]; // this is the standard permutation
 // in LFSR from Xilinx .
-assign out_rnd = random_done; // just assign the value of reg to wire 
+assign out_random = random_done; // just assign the value of reg to wire 
 
 always @ (posedge in_clock or posedge in_reset)
 begin
@@ -51,7 +51,15 @@ begin
    random_next = {random[6:0], feedback}; 
    random = random_next;
    //mapping from the real output of LFSR to the specified range by modulus approach.
-   random_done = ((random_next ) % (incremented_max - in_min ) + in_min);
+   if(random_next>=0)
+   begin
+     random_done = ((random_next ) % (incremented_max - in_min ) + in_min);
+   end
+   if(random_next<0)
+   begin
+     random_done = ((random_next ) % (incremented_max - in_min ) + incremented_max);
+   end
+   
  end
 end
   
