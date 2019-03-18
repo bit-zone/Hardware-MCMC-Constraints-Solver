@@ -37,8 +37,8 @@ module test ;
   // Initialize Inputs
   // min and max (range)
   // negative , negative
-  min = -8'd 20;
-  max = -8'd 10;
+  //min = -8'd 20;
+  //max = -8'd 10;
   // negative , positive
   //min = -8'd 20;
   //max = 8'd 2;
@@ -49,8 +49,8 @@ module test ;
   //min = -8'd 20;
   //max = 8'd 0;
   // zero , positive
-  //min = 8'd 0;
-  //max = 8'd 5;
+  min = 8'd 0;
+  max = 8'd 5;
   reset = 0;
   enable = 0;
   // Wait 100 ns for global reset to finish
@@ -73,7 +73,15 @@ module test ;
  end
   
  initial begin
- $display("clock rnd");
- $monitor("%b,%d", clock, rnd);
+ $display("output of testing");
+ $monitor(" the random number is %d",  rnd);
  end     
+
+ always @(rnd) 
+    begin
+        if(rnd>max || rnd<min)
+            begin
+                $display("ERROR");
+            end
+    end
 endmodule

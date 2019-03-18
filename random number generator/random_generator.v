@@ -57,7 +57,11 @@ begin
    end
    if(random_next<0)
    begin
-     random_done = ((random_next ) % (incremented_max - in_min ) + incremented_max);
+     random_done = ((random_next ) % (incremented_max - in_min ) + in_min + (incremented_max - in_min));
+     if(random_done==incremented_max)// result of modulus is 0
+     begin
+       random_done=random_done-(incremented_max - in_min);
+     end
    end
    
  end
