@@ -8,14 +8,13 @@ parameter NUMBER_OF_VARIABLES_WITH_INSIDE_CONSTRAINT = 1;
 
 // GENERAL NOTE -> any probability will deal with it as an integer from 0->100 instead of 0 ->1
 
-module TopModule(
-input [7:0] in_pls0, // probability of local search move
-input [7:0] in_temperature // Hyper Parameter for tuning 
-);
+module TopModule;
+    reg [7:0] in_pls0, // probability of local search move
+    reg [7:0] in_temperature // Hyper Parameter for tuning 
     reg [CLAUSE_BIT_WIDTH - 1:0] formula [NUMBER_OF_CLAUSES : 0 ] ; // contains all the coeffiecient 
     reg [(NUMBER_OF_BOOLEAN_VARIABLES+(NUMBER_OF_INTEGER_VARIABLES*BIT_WIDTH_OF_INTEGER_VARIABLE))-1:0] initial_assigmnets;
  
-    // sizes buffer will determine the parameter (constants values later)
+    // sizes buffer will  (constants values later)
    
     // read the formula from the text file generated from the pre-processing 
     initial
