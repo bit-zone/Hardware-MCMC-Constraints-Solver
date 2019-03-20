@@ -7,7 +7,6 @@ module ProposeInteger(
     input in_clause3_coefficients,
     input in_assignments_old,
     output out_assignments_new,
-    
 );
 
 
@@ -26,9 +25,9 @@ module ProposeInteger(
 - active : if the variable is in this clause or not
 */
 
-ReduceClause reduce_clause1(in_variable_index,out_bias1,out_less_than1,out_active1);
-ReduceClause reduce_clause2(in_variable_index,out_bias2,out_less_than2,out_active2);
-ReduceClause reduce_clause3(in_variable_index,out_bias3,out_less_than3,out_active3);
+ReduceClause reduce_clause1(variable_index,bias1,less_than1,active1);
+ReduceClause reduce_clause2(variable_index,bias2,less_than2,active2);
+ReduceClause reduce_clause3(variable_index,bias3,less_than3,active3);
 
 
 
@@ -48,16 +47,16 @@ ReduceClause reduce_clause3(in_variable_index,out_bias3,out_less_than3,out_activ
 CreateChooseSegment create_and_choose_segment(
 
 //Input
-out_bias1,out_less_than1,out_active1,
-out_bias2,out_less_than2,out_active2,
-out_bias3,out_less_than3,out_active3,
+bias1,less_than1,active1,
+bias2,less_than2,active2,
+bias3,less_than3,active3,
 
 
 //Output
 
-out_start,
-out_end,
-out_type
+start,
+_end,
+type
 )
 
 
@@ -78,11 +77,11 @@ out_type
 
 Sampler sampler(
 //Inputs
-out_start,
-out_end,
-out_type
+start,
+_end,
+type?
 
 //Output
-,out_assignments_new);
+,assignments_new);
 
 endmodule 
