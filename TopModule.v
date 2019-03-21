@@ -27,9 +27,9 @@ module TopModule;
     begin
         if(i<`NUMBER_OF_CLAUSES)
         begin
-            boolean_coefficients_solver_input<=formula[i][:(];
-            integer_coefficients_solver_input<=formula[i];
-            
+            boolean_coefficients_solver_input=formula[i][`CLAUSE_BIT_WIDTH-1:`BOOLEAN_COEFFICIENTS_END];
+            integer_coefficients_solver_input=formula[i][`INTEGER_COEFFICIENTS_START:0];
+            i=i+1;
         end
     end
     
