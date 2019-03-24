@@ -1,5 +1,9 @@
 // GENERAL NOTE -> any probability will deal with it as an integer from 0->100 instead of 0 ->1
 module TopModule;
+
+    wire [`NUMBER_OF_BOOLEAN_VARIABLES-1:0] boolean_valid_solution;
+    wire [(`NUMBER_OF_INTEGER_VARIABLES * `BIT_WIDTH_OF_INTEGER_VARIABLE)-1:0] out_integer_valid_solution;
+    
     reg [7:0] pls0; // probability of local search move
     reg [7:0] temperature; // Hyper Parameter for tuning 
     reg [`CLAUSE_BIT_WIDTH-1:0] formula [0:`NUMBER_OF_CLAUSES-1] ; // contains all the coeffiecient 
@@ -48,8 +52,14 @@ module TopModule;
         initial_assigmnets_boolean='d0;
         clk=0;
     end
-    
-    
     // control unit here to pass different clauses for the solver instances at every clock cycle     
-    //Solver solver(formula[i],in_pls0,in_temperature,initial_assigmnets);
+   Solver solver(boolean_coefficients_solver_input,
+                  integer_coefficients_solver_input,
+                  initial_assigmnets_boolean,
+                  initial_assigmnets_integer,
+                  pls0,
+                  temperature,
+                  clk,
+                  boolean_valid_solution,
+                  integer_valid_solution);
 endmodule
