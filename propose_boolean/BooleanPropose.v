@@ -1,30 +1,15 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 03/20/2019 01:33:11 PM
-// Design Name: 
-// Module Name: BooleanPropose
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
  `include "headers.v"
 
-module BooleanPropose(input [0:`NUMBER_OF_BOOLEAN_VARIABLES-1] in_current_assignment_boolean,//the current values assigned to boolean variables x1,x2,...
+module BooleanPropose(input [`NUMBER_OF_BOOLEAN_VARIABLES-1:0] in_current_assignment_boolean,//the current values assigned to boolean variables x1,x2,...
 input  in_variable_to_be_changed_index,//the number of variable to be flipped
 input in_enable,
-output reg [0:`NUMBER_OF_BOOLEAN_VARIABLES-1]  out_new_assignment_boolean//the new values assigned to the boolean variables
+output wire [`NUMBER_OF_BOOLEAN_VARIABLES-1:0]  out_new_assignment_Boolean//the new values assigned to the boolean variables
     );
+   //internal reg
+    reg [`NUMBER_OF_BOOLEAN_VARIABLES-1:0]  out_new_assignment_boolean;
+   //assigning the wire to the internal reg
+    assign out_new_assignment_Boolean = out_new_assignment_boolean;
+
     reg [`BIT_WIDTH_OF_BOOLEAN_VARIABLE_INDEX :0] i = 0;//index used in the for loop
     always@(*)
     begin
