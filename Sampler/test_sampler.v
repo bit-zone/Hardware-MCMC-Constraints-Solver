@@ -1,9 +1,15 @@
 `timescale 1ns/1ns
 
 
+
+
 /*
-test bench for testing random generator module
+test bench for testing sampler module
+    parameter EXPUP = 2'd2 ;
+    parameter EXPDOWN = 2'd1 ;
+    parameter UNIFORM = 2'd3 ;
 */
+
 module TestSampler ;
  
  // Inputs
@@ -39,39 +45,45 @@ Sampler uut (
      );   
      
   
- initial begin
+ initial begin  
   clock = 0;
   forever
    #50 clock = ~clock;
-  end
+
+end
    
  initial begin
+  // First try uniform segments
+ chosen_segment_type = 1;
+ chosen_segment_weight = 7;
   from = 8'd 0;
-  to = 8'd 100;
+  to = 8'd 50;
   reset = 0;
   enable = 0;
   // Wait 100 ns for global reset to finish
   #100;
       seed = 8'd 4;
       reset = 1;
-      enable=1;
-  #200;
+      enable=0;
+  
+  #100
   reset = 0;
+  enable = 1;
+  
   #100
   
-  // First try uniform segments
-  chosen_segment_type = 1;
-  chosen_segment_weight = 7;
-  enable=0;
-  #200
-  enable=1;
-  #1000
-  enable=0;
+    enable=0;
+    #100
+    enable=1;
+    #100
+    enable=0;
+    #100
+    enable=1;
   
  end
   
  initial begin
- $display("output of testing");
+ $display("output of testing sampler");
  $monitor(" the new proposed value is %d",  proposed_value);
  end     
 
