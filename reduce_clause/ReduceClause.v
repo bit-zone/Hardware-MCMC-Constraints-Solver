@@ -67,7 +67,7 @@ output wire out_Active//it says if the variable is on the clause or not
                 	out_bias = out_bias+in_coefficients_array[i]*in_current_assignment_array[i]; 
                 end 
             end    
-            out_bias = in_coefficients_array[`NUMBER_OF_INTEGER_VARIABLES] - out_bias;
+            out_bias = out_bias + in_coefficients_array[`NUMBER_OF_INTEGER_VARIABLES] ;
             ////////
            
            //if the coefficient of the variable to be unchanged is +ve ,enter here 
