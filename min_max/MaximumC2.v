@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-//This module will pass the minimum of two signed numbers
+//This module will pass the maximum of two signed numbers
 
 module MaximumC1(
 input wire signed [7:0]first_number,
@@ -11,13 +11,13 @@ input wire signed [7:0]second_number,
 input wire second_number_activation,
 input wire second_number_sign,
 
-output wire signed [7:0] minimum,
-output wire	minimum_activation //tells the socond layr if this minimum valid or not
+output wire signed [7:0] maximum,
+output wire	minimum_activation //tells the socond layr if this maximum valid or not
 );
 assign minimum =((first_number>=second_number)?
                     ((first_number_activation==1&&first_number_sign==0)?(first_number):(second_number)):
                     ((second_number_activation==1&&first_number_sign==0)?(second_number):(first_number)));
                     
-assign minimum_activation = (first_number_activation&(~first_number_sign))|(second_number_activation&(~second_number_sign));
+assign maximum_activation = (first_number_activation&(~first_number_sign))|(second_number_activation&(~second_number_sign));
                    
 endmodule
