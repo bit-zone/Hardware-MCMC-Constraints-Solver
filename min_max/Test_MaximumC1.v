@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module Test_MinimumOfTwoNumbers;
+module Test_MaximumOfTwoNumbers;
 reg signed [7:0]first_number;
 reg first_number_activation;//tells the module if it should consider this number to compare with the other one
 
@@ -38,7 +38,7 @@ begin
     $monitor("%d  %b",minimum,minimum_activation);
 end
 
-MinimumOfTwoNumbers _MinimumOfTwoNumbers (first_number,first_number_activation,
+MaximumC1 _MaximumC1 (first_number,first_number_activation,
                                           second_number,second_number_activation,
                                           minimum,minimum_activation);
 
