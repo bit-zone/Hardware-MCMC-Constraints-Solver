@@ -1,4 +1,3 @@
-`timescale 1ns/1ns
 
 
 /*
@@ -48,28 +47,28 @@ module test ;
   //normal case  +ve +ve
   c_less_than=8'd10;
   c_more_than=8'd2;
-  flag=1 ; 
+  flag=3 ; 
   //normal case  -ve -ve
   //c_less_than = -8'd2;
   //c_more_than = -8'd10;
-  //flag=1 ; 
+  //flag=3 ; 
   //normal case  +ve -ve
   //c_less_than = 8'd10;
   //c_more_than = -8'd2;
-  //flag=1 ; 
+  //flag=3 ; 
   //normal case  +ve zero
   //c_less_than = 8'd10;
   //c_more_than = 8'd0;
-  //flag=1 ; 
+  //flag=3 ; 
   //normal case  zero -ve
   //c_less_than = 8'd0;
   //c_more_than = -8'd8;
-  //flag=1 ; 
+  //flag=3 ; 
   /*****************************************************/
   //case 2 (expup-expdown) +ve +ve
   //c_less_than = 8'd1;
   //c_more_than = 8'd8;
-  //flag=1 ; 
+  //flag=3 ; 
   /******************************************************/
   //case greater than only 
   //c_less_than = 8'd1; //don't care
@@ -78,7 +77,7 @@ module test ;
   //case less than only
   //c_less_than = 8'd1; 
   //c_more_than = 8'dx;  //don't care
-  //flag=3 ;
+  //flag=1 ;
   
   ///////////////
   reset = 0;

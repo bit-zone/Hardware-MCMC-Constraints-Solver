@@ -36,7 +36,7 @@ always @ (posedge in_clock)
 begin
     case (in_flag)
     // normal case
-        1:
+        3:
         // (expup uniform expdown)(2,3,1)
         begin
             if (in_c_less_than >= in_c_more_than)
@@ -93,7 +93,7 @@ begin
             weight2 = 0;
             weight3 = 0;
         end
-        3:
+        1:
         begin
             type0 = UNIFORM;
             from0 = MINIMUM_VARIABLE;

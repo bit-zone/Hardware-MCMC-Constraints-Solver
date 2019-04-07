@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+
 //This module will pass the maximum of two signed numbers
 
 module MaximumC1(
@@ -16,7 +16,7 @@ output wire	maximum_activation //tells the socond layr if this maximum valid or 
 );
 assign maximum =((first_number>=second_number)?
                     ((first_number_activation==1&&first_number_sign==1)?(-1*first_number):(-1*second_number)):
-                    ((second_number_activation==1&&first_number_sign==1)?(-1*second_number):(-1*first_number)));
+                    ((second_number_activation==1&&second_number_sign==1)?(-1*second_number):(-1*first_number)));
                     
 assign maximum_activation = (first_number_activation&first_number_sign)|(second_number_activation&second_number_sign);
                    
