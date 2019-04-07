@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-`define BIT_WIDTH_OF_DISCRETE_VARIABLE_INDEX 4
+`define DISCRETE_VARIABLE_INDEX_BIT_WIDTH 2 //4 discrete variabeles
 `include "TopModuleHeaders.vh"
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -20,33 +20,37 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-module discrete_range_randomizer(
+module DiscreteRangeRandomizer(
     input wire in_clock,
     input wire in_enable,
     input wire [7:0]in_seed,
     
-    input wire [`BIT_WIDTH_OF_DISCRETE_VARIABLE_INDEX-1:0 ]in_variable_index,
+    input wire [`DISCRETE_VARIABLE_INDEX_BIT_WIDTH-1:0 ]in_variable_index,
     
     output wire [`BIT_WIDTH_OF_INTEGER_VARIABLE-1:0] out_start,
     output wire [`BIT_WIDTH_OF_INTEGER_VARIABLE-1:0] out_end,
     output wire out_equal
     );
-    assign out_equal=(out_start==out_end)?1:0;
+    
     
     reg reset;
     reg index_of_the_discrete_value;
+    wire [7:0] number_of_discrete_assignments; 
+    
+    assign out_equal=(out_start==out_end)?1:0;
+    
     
     DiscreteVariablesSizes discrete_variables_sizes(
-        index_of_the_discrete_value,
+        in_variable_index,
         number_of_discrete_assignments
     );
     
      RandomGenerator  random_generator(
      .in_clock(in_clock), 
      .in_reset(reset),
-     .in_enable(randomize),
-     .in_min(min),
-     .in_max(index_of_the_discrete_value),
+     .in_enable(in_enable),
+     .in_min(0),
+     .in_max(number_of_discrete_assignments),
      .in_seed(in_seed), 
      .out_random(index_of_the_discrete_value)
     );

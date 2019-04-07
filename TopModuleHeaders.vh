@@ -13,3 +13,13 @@
 // clause form with 2 boolean variables and one integer
   //00         00          00000000        00000000
 //bool var 1 bool var2     integer coeff     bias
+
+
+//defines for DiscreteRangeRandomizer
+///////////////////////////////////////////////////////////////////////
+`define NUMBER_OF_DISCRETE_VARIABLES 4
+`define DISCRETE_VARIABLE_INDEX_BIT_WIDTH 2 //4 discrete variabeles
+
+`define NUMBER_OF_DISCRETE_VALUES_FOR_ONE_VARIABLE 4 
+`define DISCRETE_VALUES_NUMBER_BIT_WIDTH 2
+///////////////////////////////////////////
