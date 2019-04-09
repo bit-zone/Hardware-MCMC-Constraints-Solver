@@ -13,12 +13,13 @@ module VariableChooser_tb(
     // if 0 , the output remains like the previous one.
     reg [7:0] in_seed;
     // initial value  , CANNOT be zero or negative
-     wire out_boolean_or_integer;
-    //if 1 the choosen variable is boolean
-    //if 0 the choosen variable is integer
+     wire [1:0]out_choosen_type;
+    //if 0 the choosen variable is boolean
+    //if 1 the choosen variable is integer
+    //if 2 the choosen variable is descrete
      wire [`BIT_WIDTH_OF_INTEGER_VARIABLE_INDEX-1:0] out_choosen_index;
     //the index of the choosen variable
-   VariableChooser myVariableChooser(in_clock,in_reset,in_enable,in_seed,out_boolean_or_integer,out_choosen_index);    
+   VariableChooser myVariableChooser(in_clock,in_reset,in_enable,in_seed,out_choosen_type,out_choosen_index);    
    initial begin
    in_clock = 0;
    forever
@@ -26,7 +27,7 @@ module VariableChooser_tb(
     end
    initial
     begin
-       $monitor("type of variable =%b----index of variable =%b",out_boolean_or_integer,out_choosen_index);
+       $monitor("type of variable =%b----index of variable =%b",out_choosen_type,out_choosen_index);
         in_reset = 0;
         in_enable = 0;
       // Wait 100 ns for global reset to finish
