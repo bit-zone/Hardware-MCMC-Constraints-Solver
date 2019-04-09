@@ -52,7 +52,7 @@ module DiscreteValuesTable(
     input [`DISCRETE_VALUES_NUMBER_BIT_WIDTH-1:0]in_index_of_the_discrete_value,
     
     
-    output wire equal,
+    
     output reg [`BIT_WIDTH_OF_INTEGER_VARIABLE-1:0] out_start,
     output reg [`BIT_WIDTH_OF_INTEGER_VARIABLE-1:0] out_end
     
@@ -61,7 +61,7 @@ module DiscreteValuesTable(
      
     reg [(`BIT_WIDTH_OF_INTEGER_VARIABLE*2)-1:0]discrete_values[0:(`NUMBER_OF_DISCRETE_VARIABLES * `NUMBER_OF_DISCRETE_VALUES_FOR_ONE_VARIABLE)];
     
-    assign equal=(out_start==out_end)?1:0;
+    
     
     always @(discrete_value_address)
     begin
