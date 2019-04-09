@@ -1,5 +1,6 @@
 `timescale 1ns / 1ps
 `include "TopModuleHeaders.vh"
+
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -34,12 +35,19 @@
 
 
 module Propose(
+
 // To be Edited yest After Liverpool match
 
-       // Current Assignment and Coeff's
+       // Current Assignment and Coeff's now Clauses hardcoded input now
       input  [((`NUMBER_OF_INTEGER_VARIABLES+1)*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] VariableChooser_coefficients_ReduceClause1,
       input [(`NUMBER_OF_INTEGER_VARIABLES*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] VariableChooser_current_assignment_ReduceClause1,
-         
+
+      input  [((`NUMBER_OF_INTEGER_VARIABLES+1)*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] VariableChooser_coefficients_ReduceClause2,
+      input [(`NUMBER_OF_INTEGER_VARIABLES*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] VariableChooser_current_assignment_ReduceClause2,
+
+       // Should be the same for clause 1 and 2
+      input [`BIT_WIDTH_OF_INTEGER_VARIABLE_INDEX-1:0] VariableChooser_variable_to_be_unchanged_index_ReduceClause,
+       
       input wire signed [7:0] in_seed,
       input wire [2:0] in_enable_flag, // 00 -> Boolean propose
                                     // 01 -> Continous propose
@@ -54,22 +62,31 @@ module Propose(
 
 
 // Instantiation
+
+// 1 Integer Continous
 ProposeIntegerContinuous continuous1(
+.VariableChooser_variable_to_be_unchanged_index_ReduceClause1(VariableChooser_variable_to_be_unchanged_index_ReduceClause),
 .in_clock(in_clock),
+
+// Clause 1 part
 .VariableChooser_coefficients_ReduceClause1(VariableChooser_coefficients_ReduceClause1),
-.VariableChooser_variable_to_be_unchanged_index_ReduceClause1(),
-.VariableChooser_coefficients_ReduceClause2(),
-.VariableChooser_variable_to_be_unchanged_index_ReduceClause1(),
-.VariableChooser_variable_to_be_unchanged_index_ReduceClause2(),
+.VariableChooser_current_assignment_ReduceClause1(VariableChooser_current_assignment_ReduceClause1),
+
 .in_enable_ReduceClause1(),
 .in_reset_ReduceClause1(),
+
+// Clause 2 part
+.VariableChooser_coefficients_ReduceClause2(VariableChooser_coefficients_ReduceClause2),
+.VariableChooser_current_assignment_ReduceClause2(VariableChooser_current_assignment_ReduceClause2),
+
+
 .in_enable_ReduceClause2(),
 .in_reset_ReduceClause2(),
 
 ////inputs to SelectSegment
 .in_reset_SelectSegment(), 
 .in_enable_SelectSegment(),
-.in_seed_SelectSegment(), 
+.in_seed_SelectSegment(in_seed), 
 
 ////outputs from select segment
 .SelectSegment_start_Mux(),
@@ -77,5 +94,8 @@ ProposeIntegerContinuous continuous1(
 .SelectSegment_type_Mux(),
 .SelectSegment_weight_Mux()
 );
+
+
+
 
 endmodule
