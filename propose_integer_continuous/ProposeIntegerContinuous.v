@@ -2,15 +2,14 @@
 module ProposeIntegerContinuous(
 input in_clock,
 ////inputs to ReduceClause 1
-input  [((`NUMBER_OF_INTEGER_VARIABLES+1)*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] VariableChooser_coefficients_ReduceClause1,
-input  [(`NUMBER_OF_INTEGER_VARIABLES*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] VariableChooser_current_assignment_ReduceClause1,
-input  [`BIT_WIDTH_OF_INTEGER_VARIABLE_INDEX-1:0] VariableChooser_variable_to_be_unchanged_index_ReduceClause1,
+input  [((`NUMBER_OF_INTEGER_VARIABLES+1)*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] In_coefficients_ReduceClause1,
+input  [(`NUMBER_OF_INTEGER_VARIABLES*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] In_current_assignment_ReduceClause1,
+input  [`BIT_WIDTH_OF_INTEGER_VARIABLE_INDEX-1:0] In_variable_to_be_unchanged_index_ReduceClause,
 input in_enable_ReduceClause1,
 input in_reset_ReduceClause1,
 ////inputs to ReduceClause 2
-input  [((`NUMBER_OF_INTEGER_VARIABLES+1)*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] VariableChooser_coefficients_ReduceClause2,
-input  [(`NUMBER_OF_INTEGER_VARIABLES*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] VariableChooser_current_assignment_ReduceClause2,
-input  [`BIT_WIDTH_OF_INTEGER_VARIABLE_INDEX-1:0] VariableChooser_variable_to_be_unchanged_index_ReduceClause2,
+input  [((`NUMBER_OF_INTEGER_VARIABLES+1)*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] In_coefficients_ReduceClause2,
+input  [(`NUMBER_OF_INTEGER_VARIABLES*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] In_current_assignment_ReduceClause2,
 input in_enable_ReduceClause2,
 input in_reset_ReduceClause2,
 ////inputs to SelectSegment
@@ -47,9 +46,9 @@ assign MaximumC_flag_SelectSegment={MaximumC2_activation,MaximumC1_activation};
 
 
 ReduceClause ReduceClause1(
-.in_coefficients(VariableChooser_coefficients_ReduceClause1),
-.in_current_assignment(VariableChooser_current_assignment_ReduceClause1),
-.in_variable_to_be_unchanged_index(VariableChooser_variable_to_be_unchanged_index_ReduceClause1),
+.in_coefficients(In_coefficients_ReduceClause1),
+.in_current_assignment(In_current_assignment_ReduceClause1),
+.in_variable_to_be_unchanged_index(In_variable_to_be_unchanged_index_ReduceClause),
 .in_enable(in_enable_ReduceClause1),
 .in_reset(in_reset_ReduceClause1),
 .out_Bias(ReduceClause1_Bias_MaximumC),
@@ -58,9 +57,9 @@ ReduceClause ReduceClause1(
 );
 
 ReduceClause ReduceClause2(
-.in_coefficients(VariableChooser_coefficients_ReduceClause2),
-.in_current_assignment(VariableChooser_current_assignment_ReduceClause2),
-.in_variable_to_be_unchanged_index(VariableChooser_variable_to_be_unchanged_index_ReduceClause2),
+.in_coefficients(In_coefficients_ReduceClause2),
+.in_current_assignment(In_current_assignment_ReduceClause2),
+.in_variable_to_be_unchanged_index(In_variable_to_be_unchanged_index_ReduceClause),
 .in_enable(in_enable_ReduceClause2),
 .in_reset(in_reset_ReduceClause2),
 .out_Bias(ReduceClause2_Bias_MaximumC),
