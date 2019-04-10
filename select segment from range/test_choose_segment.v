@@ -106,15 +106,13 @@ module test ;
  
  end     
 
-
-
  always @(*)
  begin
     $display("chosen_segment_type is %d",chosen_segment_type);
-    $display("chosen_segment_from is %d",chosen_segment_from);
-    $display("chosen_segment_to is %d",chosen_segment_to);
+    $display("from   %d",chosen_segment_from);
+    $display("to  %d",chosen_segment_to);
     $display("chosen_segment_weight is %d",chosen_segment_weight);
-
+    $display("--------------------------------------------");
    
  end
 endmodule

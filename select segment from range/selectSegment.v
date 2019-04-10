@@ -10,7 +10,7 @@ module selectSegment(
     // if 1 , the module reads the seed value , 
     // it should be 1 only at beginning and 0 after beginning .
     input wire in_enable,
-    input wire signed [7:0] in_seed, // initial value  , CANNOT be zero or negative
+    input wire [7:0] in_seed, // initial value  , CANNOT be zero or negative
     input wire signed [7:0] in_c_less_than,
     input wire signed [7:0] in_c_more_than,
     input wire [1:0] in_flag,//1,2,3
@@ -32,7 +32,7 @@ reg [1:0] type0,type1,type2;
 wire [1:0] choosen_segment_number;
 wire signed [7:0] mid;
 assign mid = (in_c_less_than+in_c_more_than)/2;
-always @ (posedge in_clock)
+always @ (in_c_less_than,in_c_more_than,mid,in_flag,choosen_segment_number)
 begin
     case (in_flag)
     // normal case
@@ -140,10 +140,10 @@ begin
         end
         default: 
         begin
-            out_chosen_segment_type<=0;
-            out_chosen_segment_from<=0;
-            out_chosen_segment_to<=0;
-            out_chosen_segment_weight<=0;
+            out_chosen_segment_type <= 0;
+            out_chosen_segment_from <= 0;
+            out_chosen_segment_to <= 0;
+            out_chosen_segment_weight <= 0;
         end
     endcase
 end
