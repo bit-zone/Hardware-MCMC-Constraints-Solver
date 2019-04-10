@@ -8,8 +8,10 @@ input [((`NUMBER_OF_INTEGER_VARIABLES+1)*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] i
 input  [(`NUMBER_OF_INTEGER_VARIABLES*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] in_current_assignment,//the current value of integer variables y1,y2,...
 input in_reset,//to erase all the internal registers
 input in_enable,
-output wire clause1_flag,//if 1 ,then clause 1 is satisfied
-output wire clause2_flag//if 1 ,then clause 2 is satisfied
+output wire [1:0]out_satisfied_flag,
+output wire clause1_flag
+//if out_satisfied_flag[0]=1 ,then clause 1 is satisfied
+//if out_satisfied_flag[1]=1 ,then clause 2 is satisfied
  
     ); 
     
@@ -26,8 +28,8 @@ output wire clause2_flag//if 1 ,then clause 2 is satisfied
     reg signed [`BIT_WIDTH_OF_INTEGER_VARIABLE -1:0] result1;
     reg signed [`BIT_WIDTH_OF_INTEGER_VARIABLE -1:0] result2;
     reg flag1,flag2;
-    assign clause1_flag=flag1;//assigning the value of reg to the output
-    assign clause2_flag=flag2;//assigning the value of reg to the output
+    assign out_satisfied_flag={flag2,flag1};
+ 
 
 
     always@(in_coefficients_clause1,in_coefficients_clause2,in_current_assignment,result1,result2,flag1,flag2,in_enable,in_reset)

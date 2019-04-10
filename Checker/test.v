@@ -6,12 +6,12 @@ reg [((`NUMBER_OF_INTEGER_VARIABLES+1)*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] in_
 reg [(`NUMBER_OF_INTEGER_VARIABLES*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] in_current_assignment;//the current value of integer variables y1,y2,...
 reg in_reset;
 reg in_enable;
-wire clause1_flag;
-wire clause2_flag;
-checker mychecker(in_coefficients_clause1,in_coefficients_clause2,in_current_assignment,in_reset,in_enable,clause1_flag,clause2_flag); 
+wire [1:0]flag;
+
+checker mychecker(in_coefficients_clause1,in_coefficients_clause2,in_current_assignment,in_reset,in_enable,flag); 
 initial
     begin
-       $monitor("flag1 =%b----flag2= %b",clause1_flag,clause2_flag );
+       $monitor("flag1 =%b----flag2= %b",flag[0],flag[1] );
         in_reset = 1;
         in_enable = 0;
         #10;
