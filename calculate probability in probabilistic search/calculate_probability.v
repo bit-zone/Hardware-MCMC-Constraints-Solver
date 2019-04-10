@@ -44,7 +44,7 @@ module calculateProbability(
     input wire [7:0] in_u,
     input wire [7:0] in_v,
   //ouputs
-    output wire signed [7:0] out_p 
+    output wire  out_p 
     // the random number 
     );
 

@@ -14,7 +14,7 @@ module test ;
  reg [7:0]u,v;
 
  // Outputs
- wire  [7:0] p;
+ wire   p;
  
  // Instantiate the Unit Under Test (UUT)
  calculateProbability  uut (
