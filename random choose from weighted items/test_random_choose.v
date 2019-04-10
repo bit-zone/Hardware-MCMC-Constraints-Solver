@@ -74,7 +74,7 @@ integer count0=0;
 integer count1=0;
 integer count2=0;
 integer count3=0;
- always @(out_segment_number)
+ always @(posedge clock)
  begin
     $monitor("count of segment 0 is %d",count0);
     $monitor("count of segment 1 is %d",count1);

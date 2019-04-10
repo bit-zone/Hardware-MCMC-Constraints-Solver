@@ -18,63 +18,38 @@ module RandomChoose(
     // if 1 , the module reads the seed value , 
     // it should be 1 only at beginning and 0 after beginning .
     input wire in_enable,
+    // enable signal for random generator
     // the 4 weights of the segments , if you want only 2 segments , you can put the other as zeros.
     input wire  [7:0] in_weight0,
     input wire  [7:0] in_weight1,
     input wire  [7:0] in_weight2,
     input wire  [7:0] in_weight3,
-    input wire signed [7:0] in_seed, // initial value  , CANNOT be zero or negative
+    input wire  [7:0] in_seed, // initial value  , CANNOT be zero or negative
   //ouputs
-    output reg  [1:0] out_segment_number // (the choosing segment number) : 0 , 1 , 2 ,or 3 . 
+    output wire  [1:0] out_segment_number // (the choosing segment number) : 0 , 1 , 2 ,or 3 . 
     
     );
 
-reg signed [7:0] random,seed; // temporary variables 
+
 wire [7:0]sum_weights,sum_weights_minus_one;
-wire signed [7:0]random_from_randomize;
+wire signed [7:0] random,random_minus_weight0,random_minus_weight1,random_minus_weight2;
+
 assign sum_weights = in_weight0 + in_weight1 + in_weight2 + in_weight3;
 assign sum_weights_minus_one = sum_weights-1;
 
-always @ (posedge in_clock)
-begin
+assign random_minus_weight0 = random - in_weight0;
+assign random_minus_weight1 = random_minus_weight0 - in_weight1;
+assign random_minus_weight2 = random_minus_weight1 - in_weight2;
 
-    
-// it should be 1 if you want new numbers to be generated every posetive clock edge .
-// if 0 , the output remains like the previous one.
-    if(in_enable) 
-    begin
-    // get the random value from RandomGenerator module 
-        random = random_from_randomize;
-        if ( random < in_weight0 )
-        begin
-            out_segment_number = 0;
-        end
-        else 
-        begin
-            random = random - in_weight0;
-            if ( random < in_weight1 )
-            begin
-                out_segment_number = 1;
-            end
-            else 
-            begin
-                random = random - in_weight1;
-                if ( random < in_weight2 ) 
-                begin
-                    out_segment_number = 2;
-                end
-                else  
-                begin
-                    random = random - in_weight2;
-                    if ( random < in_weight3 )
-                    begin
-                        out_segment_number = 3;
-                    end
-                end
-            end
-        end
-    end
-end
+assign out_segment_number = 
+(random < in_weight0)? 2'd0 :
+(
+    (random_minus_weight0 < in_weight1)? 2'd1:
+    (
+        (random_minus_weight1 < in_weight2)? 2'd2:
+        (random_minus_weight2 < in_weight3)? 2'd3:2'd3 //shouldn't reach this last else.
+    )
+); 
 
   RandomGenerator  randomize (
   .in_clock(in_clock), 
@@ -83,6 +58,6 @@ end
   .in_min(8'd0),
   .in_max(sum_weights_minus_one),
   .in_seed(in_seed), 
-  .out_random(random_from_randomize)
+  .out_random(random)
  );
 endmodule
