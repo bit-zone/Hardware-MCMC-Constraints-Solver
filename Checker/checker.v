@@ -51,7 +51,7 @@ input [((`NUMBER_OF_INTEGER_VARIABLES+1)*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] i
 input  [(`NUMBER_OF_INTEGER_VARIABLES*`BIT_WIDTH_OF_INTEGER_VARIABLE )-1:0] in_current_assignment,//the current value of integer variables y1,y2,...
 input in_reset,//to erase all the internal registers
 input in_enable,
-output wire [`NUMBER_OF_CLAUSES_BIT_WIDTH:0]out_satisfied_flag
+output wire [`NUMBER_OF_CLAUSES_BIT_WIDTH-1:0]out_satisfied_flag
 //if out_satisfied_flag[0]=1 ,then clause 1 is satisfied
 //if out_satisfied_flag[1]=1 ,then clause 2 is satisfied
  
