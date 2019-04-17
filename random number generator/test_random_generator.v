@@ -5,19 +5,19 @@
 test bench for testing random generator module
 */
 module test ;
- 
+parameter WIDTH = 32;
  // Inputs
- reg clock;
- reg reset;
- reg enable;
- reg [7:0]seed;
- reg signed[7:0]min;
- reg signed[7:0]max;
+reg clock;
+reg reset;
+reg enable;
+reg [WIDTH-1:0]seed;
+reg signed[WIDTH-1:0]min;
+reg signed[WIDTH-1:0]max;
  // Outputs
- wire signed [7:0] rnd;
+wire signed [WIDTH-1:0] rnd;
  
  // Instantiate the Unit Under Test (UUT)
- RandomGenerator  uut (
+ RandomGenerator #(.WIDTH(WIDTH)) uut (
   .in_clock(clock), 
   .in_reset(reset),
   .in_enable(enable),
@@ -49,15 +49,17 @@ module test ;
   //min = -8'd 20;
   //max = 8'd 0;
   // zero , positive
-  min = 8'd 0;
-  max = 8'd 5;
+  min =  0;
+  max =  5;
+  ///////////////////////////////////////////////////
+  seed = 16;
   reset = 0;
   enable = 0;
   // Wait 100 ns for global reset to finish
   #100;
-      seed = 8'd 1;
+      
       reset = 1;
-      enable=1;
+      enable = 1;
   #200;
   reset = 0;
   #100
@@ -72,10 +74,10 @@ module test ;
   
  end
   
- initial begin
- $display("output of testing");
- $monitor(" the random number is %d",  rnd);
- end     
+always @(posedge clock)
+    begin
+        $display(" the random number is %d",  rnd);
+    end
 
  always @(rnd) 
     begin
@@ -84,4 +86,5 @@ module test ;
                 $display("ERROR");
             end
     end
+
 endmodule
