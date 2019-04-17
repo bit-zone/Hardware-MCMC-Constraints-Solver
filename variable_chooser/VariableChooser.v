@@ -1,3 +1,4 @@
+`timescale 1ns/1ns
 ///////////
 // the variableChooser module is used to choose a variable randomly
 // the variable can be integer or boolean also in a random way
@@ -58,7 +59,9 @@ assign out_choosen_type=(general_index<number_of_boolean_variables)?2'b00:
 
 
         
-RandomGenerator chooser(
+RandomGenerator 
+#(.WIDTH(MAX_BIT_WIDTH_OF_VARIABLES_INDEX)) 
+chooser (
   .in_clock(in_clock), 
   .in_reset(in_reset),
   .in_enable(in_enable),

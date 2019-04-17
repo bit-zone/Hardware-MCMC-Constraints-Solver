@@ -1,8 +1,8 @@
-
+`timescale 1ns/1ns
 
 module VariableChooser_tb;
     
-    parameter MAX_BIT_WIDTH_OF_VARIABLES_INDEX=8;   
+    parameter MAX_BIT_WIDTH_OF_VARIABLES_INDEX=4;   
      reg in_clock;
    //the general clock 
      reg in_reset; 
@@ -36,8 +36,8 @@ module VariableChooser_tb;
         in_reset = 0;
         in_enable = 0;
         number_of_boolean_variables=5;
-        number_of_integer_variables=10;
-        number_of_discrete_integer_variables=5;
+        number_of_integer_variables=5;
+        number_of_discrete_integer_variables=2;
       // Wait 100 ns for global reset to finish
       #100;
       in_seed = 1;
@@ -50,7 +50,8 @@ module VariableChooser_tb;
       #200;
       in_enable=1;
     end
-    VariableChooser testVariableChooser(
+    VariableChooser #(.MAX_BIT_WIDTH_OF_VARIABLES_INDEX(MAX_BIT_WIDTH_OF_VARIABLES_INDEX)) 
+    testVariableChooser(
     .in_clock(in_clock),
     .in_reset(in_reset),
     .in_enable(in_enable),
