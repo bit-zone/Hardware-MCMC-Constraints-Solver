@@ -2,35 +2,41 @@
 /*
 select a segment from the range of a variable
 */
-module selectSegment(
+module selectSegment(in_clock,in_reset,in_enable,in_seed,in_c_less_than,in_c_more_than,in_min_variable,
+in_max_variable,in_flag,out_chosen_segment_type,out_chosen_segment_from,out_chosen_segment_to,
+out_chosen_segment_weight);
+
+    parameter WIDTH = 8;
 //inputs
-    input wire in_clock, 
+    input wire in_clock;
     // the main clock of the system.
-    input wire in_reset, 
+    input wire in_reset; 
     // if 1 , the module reads the seed value , 
     // it should be 1 only at beginning and 0 after beginning .
-    input wire in_enable,
-    input wire [7:0] in_seed, // initial value  , CANNOT be zero or negative
-    input wire signed [7:0] in_c_less_than,
-    input wire signed [7:0] in_c_more_than,
-    input wire [1:0] in_flag,//1,2,3
+    input wire in_enable;
+    input wire [WIDTH:0] in_seed; // initial value  , CANNOT be zero or negative
+    input wire signed [WIDTH-1:0] in_c_less_than;//c2
+    input wire signed [WIDTH-1:0] in_c_more_than;//c1
+    // minimum and maximum values for the chosen variable
+    input wire signed [WIDTH-1:0] in_min_variable;
+    input wire signed [WIDTH-1:0] in_max_variable;
+    input wire [1:0] in_flag;//1,2,3
   //ouputs
-    output reg  [1:0] out_chosen_segment_type ,// (the choosing segment type) : 3 , 1 ,or 2 .
-    output reg signed [7:0] out_chosen_segment_from,
-    output reg signed [7:0] out_chosen_segment_to,
-    output reg signed [7:0] out_chosen_segment_weight
-    );
+    output reg  [1:0] out_chosen_segment_type ;// (the choosing segment type) : 3 , 1 ,or 2 .
+    output reg signed [WIDTH-1:0] out_chosen_segment_from;
+    output reg signed [WIDTH-1:0] out_chosen_segment_to;
+    output reg signed [WIDTH:0] out_chosen_segment_weight;
+   
 
 parameter EXPUP = 2'd2 ;
 parameter EXPDOWN = 2'd1 ;
 parameter UNIFORM = 2'd3 ;
-parameter MINIMUM_VARIABLE = -8'd128 ;
-parameter MAXIMUM_VARIABLE = 8'd127 ;
 
-reg signed [7:0] weight0,weight1,weight2,weight3,from0,to0,from1,to1,from2,to2; // temporary variables 
+
+reg signed [WIDTH:0] weight0,weight1,weight2,weight3,from0,to0,from1,to1,from2,to2; // temporary variables 
 reg [1:0] type0,type1,type2;
 wire [1:0] choosen_segment_number;
-wire signed [7:0] mid;
+wire signed [WIDTH-1:0] mid;
 assign mid = (in_c_less_than+in_c_more_than)/2;
 always @ (in_c_less_than,in_c_more_than,mid,in_flag,choosen_segment_number)
 begin
@@ -43,7 +49,7 @@ begin
             begin
                 
                 type0 = EXPUP;
-                from0 = MINIMUM_VARIABLE;
+                from0 = in_min_variable;
                 to0 = in_c_more_than;
                 weight0 = 2* (1-2**(-(to0-from0+1)));
                 //////////////////////////////////////
@@ -54,7 +60,7 @@ begin
                 //////////////////////////////////////
                 type2 = EXPDOWN;
                 from2 = in_c_less_than;
-                to2 = MAXIMUM_VARIABLE;
+                to2 = in_max_variable;
                 weight2 = 2* (1-2**(-(to2-from2+1)));
                 ///////////////////////////////////////
                 weight3 = 0;
@@ -64,13 +70,13 @@ begin
             if ( in_c_less_than < in_c_more_than )
             begin
                 type0 = EXPUP;
-                from0 = MINIMUM_VARIABLE;
+                from0 = in_min_variable;
                 to0 = mid;
                 weight0 = 2* (1-2**(-(to0-from0+1)));
                 //////////////////////////////////////
                 type1 = EXPDOWN;
                 from1 = mid;
-                to1 = MAXIMUM_VARIABLE;
+                to1 = in_max_variable;
                 weight1 = 2* (1-2**(-(to1-from1+1)));
                 //////////////////////////////////////
                 weight2 =0;
@@ -81,13 +87,13 @@ begin
         2:
         begin
             type0 = EXPUP;
-            from0 = MINIMUM_VARIABLE;
+            from0 = in_min_variable;
             to0 = in_c_more_than;
             weight0 = 2* (1-2**(-(to0-from0+1)));
             ///////////////////////////////////////
             type1 = UNIFORM;
             from1 = in_c_more_than;
-            to1 = MAXIMUM_VARIABLE;
+            to1 = in_max_variable;
             weight1 = to1-from1+1;
             ////////////////////////////////////////
             weight2 = 0;
@@ -96,13 +102,13 @@ begin
         1:
         begin
             type0 = UNIFORM;
-            from0 = MINIMUM_VARIABLE;
+            from0 = in_min_variable;
             to0 = in_c_less_than;
             weight0 = to0-from0+1;
             ///////////////////////////////////////
             type1 = EXPDOWN;
             from1 = in_c_less_than;
-            to1 = MAXIMUM_VARIABLE;
+            to1 = in_max_variable;
             weight1 = 2* (1-2**(-(to1-from1+1)));
             ///////////////////////////////////////
             weight2 = 0;
@@ -147,7 +153,7 @@ begin
         end
     endcase
 end
-    RandomChoose  choose_segment (
+    RandomChoose #(.WIDTH(WIDTH)) choose_segment (
   .in_clock(in_clock), 
   .in_reset(in_reset),
   .in_enable(in_enable),
