@@ -13,7 +13,7 @@ the used algorithm (weights approach):
 module RandomChoose(in_clock,in_reset,in_enable,in_weight0,in_weight1,in_weight2,in_weight3,in_seed,out_segment_number);
 
 // thw weight width may be more than the maximum of the variable by one , so its width will defined by one more bit
-    parameter WIDTH = 7; // default value is 7
+    parameter WIDTH = 32; // default value is 32
 //inputs
     input wire in_clock; 
     // the main clock of the system.
