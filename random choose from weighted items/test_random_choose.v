@@ -5,19 +5,19 @@
 test bench for testing random choose module
 */
 module test ;
- 
+ parameter WIDTH = 31;
  // Inputs
  reg clock;
  reg reset;
  reg enable;
- reg [7:0]weight0,weight1,weight2,weight3;
- reg [7:0]seed;
+ reg [WIDTH:0]weight0,weight1,weight2,weight3;
+ reg [WIDTH:0]seed;
  
  // Outputs
  wire  [1:0] out_segment_number;
  
  // Instantiate the Unit Under Test (UUT)
- RandomChoose  uut (
+ RandomChoose  #(.WIDTH(WIDTH))uut (
   .in_clock(clock), 
   .in_reset(reset),
   .in_enable(enable),
@@ -38,18 +38,18 @@ module test ;
  initial begin
   // Initialize Inputs
   ////////////////
-  weight0=8'd2;
-  weight1=8'd4;
-  weight2=8'd2;
-  weight3=8'd0;
+  weight0 = 2;
+  weight1 = 4;
+  weight2 = 2;
+  weight3 = 0;
   ///////////////
   reset = 0;
   enable = 0;
   // Wait 100 ns for global reset to finish
   #100;
-      seed = 8'd 1;
+      seed = 1;
       reset = 1;
-      enable=1;
+      enable = 1;
   #200;
   reset = 0;
   #100

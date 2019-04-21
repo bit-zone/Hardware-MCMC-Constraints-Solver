@@ -11,7 +11,7 @@ If enable signal=1 .then a new random output will be generated.
 
 module RandomGenerator(in_clock,in_reset,in_enable,in_min,in_max,in_seed,out_random);
   
-parameter WIDTH = 8; //default value
+parameter WIDTH = 33; //default value(maximum allowed width)
   //inputs
 input wire in_clock;
     // the main clock of the system.

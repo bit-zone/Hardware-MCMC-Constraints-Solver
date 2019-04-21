@@ -5,7 +5,7 @@
 test bench for testing random generator module
 */
 module test ;
-parameter WIDTH = 32;
+parameter WIDTH = 8;
  // Inputs
 reg clock;
 reg reset;
