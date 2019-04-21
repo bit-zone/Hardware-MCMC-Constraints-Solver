@@ -1,4 +1,4 @@
-
+`timescale 1ns/1ns
 
 /*
 test bench for testing choose segment
@@ -20,7 +20,7 @@ module test ;
  wire  [1:0] chosen_segment_type ;
  wire signed [WIDTH-1:0] chosen_segment_from;
  wire signed [WIDTH-1:0] chosen_segment_to;
- wire signed [WIDTH:0] chosen_segment_weight;
+ wire  [WIDTH:0] chosen_segment_weight;
  
  // Instantiate the Unit Under Test (UUT)
  selectSegment #(.WIDTH(WIDTH)) uut (
