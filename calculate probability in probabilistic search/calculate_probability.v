@@ -41,8 +41,8 @@ module calculateProbability(
     // it should be 1 if you want new numbers to be generated every posetive clock edge .
     // if 0 , the output remains like the previous one.
     input wire [7:0] in_seed, // initial value  , CANNOT be zero or negative
-    input wire [7:0] in_u,//number of failed clauses (before) the new proposed value.
-    input wire [7:0] in_v,//number of failed clauses (after) the new proposed value.
+    input wire [7:0] in_u,
+    input wire [7:0] in_v,
   //ouputs
     output wire  out_p 
     // the random number 
@@ -61,7 +61,7 @@ assign out_p = ( u_minus_v >= 0 ) ? 8'd1 :
  ( u_minus_v == -8'd6 && random_number < 8'd2 ) ? 8'd1 :
  ( u_minus_v <= -8'd7 ) ? 8'd0 : 8'd0; 
 
-    RandomGenerator  randomize (
+    RandomGenerator #(.WIDTH(8)) randomize (
   .in_clock(in_clock), 
   .in_reset(in_reset),
   .in_enable(in_enable),
