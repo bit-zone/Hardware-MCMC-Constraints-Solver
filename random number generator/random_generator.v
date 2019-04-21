@@ -11,7 +11,7 @@ If enable signal=1 .then a new random output will be generated.
 
 module RandomGenerator(in_clock,in_reset,in_enable,in_min,in_max,in_seed,out_random);
   
-parameter WIDTH = 33; //default value(maximum allowed width)
+parameter WIDTH = 8; //default value
   //inputs
 input wire in_clock;
     // the main clock of the system.
@@ -50,6 +50,10 @@ wire feedback = (WIDTH==8)?(random[7] ^ random[5] ^ random[4] ^ random[3]):
 always @(*)
     begin
       case (WIDTH)
+      // in case of WIDTH =2 the module may work not well
+        2: begin
+          feedback = random[1] ^ random[0];
+        end
         3: begin
           feedback = random[2] ^ random[1];
         end
