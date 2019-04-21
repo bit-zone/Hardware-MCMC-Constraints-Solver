@@ -1,60 +1,34 @@
-`include "TopModuleHeaders.vh"
-// set this file as a global include
-`define NUMBER_OF_CLAUSES  3 // does not include "inside" constraint
-`define NUMBER_OF_INTEGER_VARIABLES 2
-`define NUMBER_OF_BOOLEAN_VARIABLES 2
-`define BIT_WIDTH_OF_INTEGER_VARIABLE 8
-`define BIT_WIDTH_OF_INTEGER_COEFFICIENTS 8 // bit signed                                                                      this | 8 is for the bias
-`define CLAUSE_BIT_WIDTH (( 2 * `NUMBER_OF_BOOLEAN_VARIABLES )+(`NUMBER_OF_INTEGER_VARIABLES * `BIT_WIDTH_OF_INTEGER_COEFFICIENTS )+8) //(2*NUMBER_OF_BOOLEAN_VARIABLES) 1 bit to indicate whether is exist or not and the other bit is a the constraint (x or !x)
-`define NUMBER_OF_VARIABLES_WITH_INSIDE_CONSTRAINT  1
-
-`define BOOLEAN_COEFFICIENTS_END `CLAUSE_BIT_WIDTH-(`NUMBER_OF_BOOLEAN_VARIABLES*2)
-`define INTEGER_COEFFICIENTS_START `BOOLEAN_COEFFICIENTS_END-1
-// clause form with 2 boolean variables and one integer
-  //00         00          00000000        00000000
-//bool var 1 bool var2     integer coeff     bias
-
-
-//defines for DiscreteRangeRandomizer
-///////////////////////////////////////////////////////////////////////
-`define NUMBER_OF_DISCRETE_VARIABLES 4
-`define DISCRETE_VARIABLE_INDEX_BIT_WIDTH 2 //4 discrete variabeles
-
-`define NUMBER_OF_DISCRETE_VALUES_FOR_ONE_VARIABLE 4 
-`define DISCRETE_VALUES_NUMBER_BIT_WIDTH 2
-
-
-// the number of elements inside the "insside constraints"
-module DiscreteVariablesSizes(
-    input [`DISCRETE_VARIABLE_INDEX_BIT_WIDTH - 1 : 0] in_variable_index,
-    output reg [`DISCRETE_VALUES_NUMBER_BIT_WIDTH - 1:0] out_number_of_discrete_assignments    
+// this module is a memory that store for each variable used with inside constraint
+module DiscreteVariablesSizes
+#( 
+    parameter MAX_BIT_WIDTH_OF_VARIABLES_INDEX =2,
+    parameter MAX_BIT_WIDTH_OF_DISCRETE_CHOICES =2,
+    // for inside constraint we have 16 choice in it
+    //for exampl x inside [1,3,5,7,9,0,12,34,76,65,56,77,88,99,[100:200],[40:60]]
+    parameter FILE_PATH="number_of_discrete_choices_of_each_variable.mem"
+)
+(   
+    
+    input [MAX_BIT_WIDTH_OF_VARIABLES_INDEX - 1 : 0] in_variable_index,
+    output wire [MAX_BIT_WIDTH_OF_DISCRETE_CHOICES - 1:0] out_number_of_discrete_assignments    
    );
-    
-    
-    reg [`DISCRETE_VARIABLE_INDEX_BIT_WIDTH - 1 : 0] number_of_discrete_variables_table [0:`DISCRETE_VALUES_NUMBER_BIT_WIDTH - 1]; // we have maximum 4 variables and maximum 4 elements inside
-    always @(in_variable_index)
-    begin
-        out_number_of_discrete_assignments <= number_of_discrete_variables_table[in_variable_index];
-    end
+  
+    reg [MAX_BIT_WIDTH_OF_DISCRETE_CHOICES-1 :0] number_of_discrete_assignments;
+    reg [MAX_BIT_WIDTH_OF_DISCRETE_CHOICES-1 : 0] number_of_discrete_variables_table[0:(2**MAX_BIT_WIDTH_OF_VARIABLES_INDEX)- 1]; 
+     
+     assign out_number_of_discrete_assignments=number_of_discrete_assignments;
+     
+     always @(in_variable_index)
+     begin
+        number_of_discrete_assignments <= number_of_discrete_variables_table[in_variable_index];
+     end
+              
     initial
         begin
-        // before you start simulation you just put your input files path
-            $readmemb("D:\\projects\\0IMP_Projects\\GP\\tables.txt",number_of_discrete_variables_table);
-             /* the loaded example
-                 011
-                 010
-                 000
-                 100
-                 000
-                 010
-                 010
-                 000
-                  */
-                  
-            $display("Who Cares? ");
-            $display("%b",number_of_discrete_variables_table[0]);
+        // this file should contain the max index of inside choice not their actual number
+            $readmemb(FILE_PATH,number_of_discrete_variables_table);
         end
-            
+    
 endmodule
 
 
