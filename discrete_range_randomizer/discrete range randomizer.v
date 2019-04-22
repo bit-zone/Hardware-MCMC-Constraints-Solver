@@ -46,6 +46,7 @@ module DiscreteRangeRandomizer
         .FILE_PATH(NUMBER_OF_DISCRETE_CHOICES_FILE_PATH)
     )
     discrete_variables_sizes(
+        .in_clock(in_clock),
         .in_variable_index(in_variable_index),
         .out_number_of_discrete_assignments(number_of_discrete_assignments)
     );
@@ -74,6 +75,7 @@ module DiscreteRangeRandomizer
        .FILE_PATH(DISCRETE_VALUES_FILE_PATH)
     ) 
     discrete_values_table(
+    .in_clock(in_clock),
     .in_variable_index(in_variable_index),
     .in_index_of_the_discrete_value(index_of_the_discrete_value),
     
