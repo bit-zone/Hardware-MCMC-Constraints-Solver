@@ -30,9 +30,9 @@ wire [((2**MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX)+1//for the bias
 )*MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]clauses_coefficients[0:(2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1];
 
 
-wire [MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]reduce_out_biases[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
-wire reduce_out_activations[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
-wire reduce_out_sign[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];//the clause is y+c>0 or y+c<0
+wire [MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]reduce_out_biases[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)];
+wire reduce_out_activations[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)];
+wire reduce_out_sign[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)];//the clause is y+c>0 or y+c<0
 
 wire [MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]tree_comparator_biases_for_c1[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
 wire tree_comparator_activations_for_c1[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1]; 
