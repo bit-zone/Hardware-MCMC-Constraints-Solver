@@ -42,7 +42,7 @@ output wire out_Active//it says if the variable is on the clause or not
     wire signed [MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0] in_current_assignment_array[0:(2**MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX)-1];// local 2d array for the current assignment
     /////	
     //the combinational circuit
-    
+
     genvar j;//for loop variable
     //assigning the input to 2d array
     for( j=0;j<=2**MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX;j=j+1)
