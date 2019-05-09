@@ -45,14 +45,14 @@ generate
 genvar i,j;
 for(i=0;i<(2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX);i=i+1)begin:generate_reduce
 
-ClauseRegister_IntegerLiteral
+ClauseRegister
 #( 
-.MAXIMUM_BIT_WIDTH_OF_INTEGER_COEFFICIENT(MAXIMUM_BIT_WIDTH_OF_COEFFICIENT),
+.MAXIMUM_BIT_WIDTH_OF_COEFFICIENT(MAXIMUM_BIT_WIDTH_OF_COEFFICIENT),
 .NUMBER_OF_INTEGER_VARIABLES(2**MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX),
 .MODULE_IDENTIFIER(i),
 .MAX_BIT_WIDTH_OF_CLAUSES_INDEX(MAX_BIT_WIDTH_OF_CLAUSES_INDEX)
 )
-    clause_register_integer_literal(
+    clause_register(
          .in_clause_coefficients(in_clause_coefficients),
          .in_clause_index(in_clause_index),
          .in_reset(in_reset),
