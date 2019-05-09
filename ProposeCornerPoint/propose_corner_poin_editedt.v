@@ -118,9 +118,9 @@ end
 //number of nodes in the last level of our tree = number of reduce blocks /2
 for (i=0;i<2**(MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1;i=(i/2)+2**(MAX_BIT_WIDTH_OF_CLAUSES_INDEX-1))begin :generate_secod_level_in_the_tree_for_c1
          for(j=i;j<(i/2)+2**(MAX_BIT_WIDTH_OF_CLAUSES_INDEX-1)-1;j=j+2)begin : generate_ith_level
-             Maximum_with_active_signal_only 
+             Minimum_C1_with_active_signal_only 
              #( .NUMBER_SIZE(MAXIMUM_BIT_WIDTH_OF_COEFFICIENT))
-             max_c1(
+             min_c1(
                  .first_number(tree_comparator_biases_for_c1[j]),
                  .first_number_activation(tree_comparator_activations_for_c1[j]),
                 
@@ -139,7 +139,7 @@ end
 
 for (i=0;i<2**(MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1;i=(i/2)+2**(MAX_BIT_WIDTH_OF_CLAUSES_INDEX-1))begin :generate_secod_level_in_the_tree_for_c2
          for(j=i;j<(i/2)+2**(MAX_BIT_WIDTH_OF_CLAUSES_INDEX-1)-1;j=j+2)begin : generate_ith_level
-             Maximum_with_active_signal_only 
+             Maximum_C2_with_active_signal_only 
              #( .NUMBER_SIZE(MAXIMUM_BIT_WIDTH_OF_COEFFICIENT))
              max_c2(
                  .first_number(tree_comparator_biases_for_c2[j]),
