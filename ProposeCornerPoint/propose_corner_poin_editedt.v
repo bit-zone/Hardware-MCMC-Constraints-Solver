@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module propose_corner_point
+module propose_corner_point_edited
 #(
 
 parameter MAXIMUM_BIT_WIDTH_OF_COEFFICIENT = 8,
@@ -24,35 +24,35 @@ input [(2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1:0]in_reduce_enable,
 
 //this should be [MAX_BIT_WIDTH_OF_INTEGER_VARIABLE-1:0] but the new assignment here is one of the biases
 //so we have to make MAXIMUM_BIT_WIDTH_OF_COEFFICIENT=MAX_BIT_WIDTH_OF_INTEGER_VARIABLE
-output reg [MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]new_assignmet_for_the_choosen_variable
+output reg signed [MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]new_assignmet_for_the_choosen_variable
 );
 wire [((2**MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX)+1//for the bias
 )*MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]clauses_coefficients[0:(2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1];
 
 
-wire [MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]reduce_out_biases[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
+wire signed[MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]reduce_out_biases[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
 wire reduce_out_activations[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
 wire reduce_out_sign[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];//the clause is y+c>0 or y+c<0
 
-wire [MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]tree_comparator_biases_for_c1[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
+wire signed[MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]tree_comparator_biases_for_c1[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
 wire tree_comparator_activations_for_c1[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1]; 
 
 
-wire [MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]tree_comparator_biases_for_c2[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
+wire signed[MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]tree_comparator_biases_for_c2[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
 wire tree_comparator_activations_for_c2[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1]; 
 
 generate 
 genvar i,j;
 for(i=0;i<(2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX);i=i+1)begin:generate_reduce
 
-ClauseRegister
+ClauseRegister_IntegerLiteral
 #( 
-.MAXIMUM_BIT_WIDTH_OF_COEFFICIENT(MAXIMUM_BIT_WIDTH_OF_COEFFICIENT),
-.NUMBER_OF_INTEGER_VARIABLES(2**MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX),
-.MODULE_IDENTIFIER(i),
-.MAX_BIT_WIDTH_OF_CLAUSES_INDEX(MAX_BIT_WIDTH_OF_CLAUSES_INDEX)
+ .MAXIMUM_BIT_WIDTH_OF_INTEGER_COEFFICIENT(MAXIMUM_BIT_WIDTH_OF_COEFFICIENT),
+ .NUMBER_OF_INTEGER_VARIABLES(2**MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX),
+ .MODULE_IDENTIFIER(i),
+ .MAX_BIT_WIDTH_OF_CLAUSES_INDEX(MAX_BIT_WIDTH_OF_CLAUSES_INDEX)
 )
-    clause_register(
+    clause_register_integer_literal(
          .in_clause_coefficients(in_clause_coefficients),
          .in_clause_index(in_clause_index),
          .in_reset(in_reset),
@@ -63,8 +63,7 @@ ClauseRegister
  ReduceClause
  #(
     .MAXIMUM_BIT_WIDTH_OF_COEFFICIENT(MAXIMUM_BIT_WIDTH_OF_COEFFICIENT),
-    .MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX(MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX),
-    .MAXIMUM_BIT_WIDTH_OF_INTEGER_VARIABLE(MAX_BIT_WIDTH_OF_INTEGER_VARIABLE)
+    .MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX(MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX)
   )
  reduce_clause 
 (
