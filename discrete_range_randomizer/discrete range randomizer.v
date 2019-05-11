@@ -11,9 +11,12 @@ module DiscreteRangeRandomizer
     
 )
 (
+
 //inputs for random generator
     input wire in_clock,
-    input wire in_enable,
+    input wire in_DiscreteVariablesSizes_enable,
+    input wire in_random_enable,
+    input wire in_DiscreteValuesTable_enable,
     input wire [1:0]in_seed,
     input wire in_reset,
     //this is for the random generator seed initialization
@@ -37,7 +40,7 @@ module DiscreteRangeRandomizer
     
     assign out_equal=(out_start==out_end)?1'b1:1'b0;
     
-    DiscreteVariablesSizes 
+    DiscreteVariablesSizes // ---------------> need input_read_enable 
     #(//module parameters
         .MAX_BIT_WIDTH_OF_VARIABLES_INDEX (MAX_BIT_WIDTH_OF_VARIABLES_INDEX),
         .MAX_BIT_WIDTH_OF_DISCRETE_CHOICES (MAX_BIT_WIDTH_OF_DISCRETE_CHOICES),
@@ -47,6 +50,7 @@ module DiscreteRangeRandomizer
     )
     discrete_variables_sizes(
         .in_clock(in_clock),
+        .in_enable(in_DiscreteVariablesSizes_enable),
         .in_variable_index(in_variable_index),
         .out_number_of_discrete_assignments(number_of_discrete_assignments)
     );
@@ -58,14 +62,14 @@ module DiscreteRangeRandomizer
      random_generator(
          .in_clock(in_clock), 
          .in_reset(in_reset),
-         .in_enable(in_enable),
+         .in_enable(in_random_enable),
          .in_min(2'b0),
          .in_max(number_of_discrete_assignments),
          .in_seed(in_seed), 
          .out_random(index_of_the_discrete_value)
     );
     
-    DiscreteValuesTable 
+    DiscreteValuesTable  // ---------------> need input_read_enable 
     #(//module parameters
         .MAX_BIT_WIDTH_OF_INTEGER_VARIABLE(MAX_BIT_WIDTH_OF_INTEGER_VARIABLE),
         .MAX_BIT_WIDTH_OF_VARIABLES_INDEX (MAX_BIT_WIDTH_OF_VARIABLES_INDEX),
@@ -76,6 +80,7 @@ module DiscreteRangeRandomizer
     ) 
     discrete_values_table(
     .in_clock(in_clock),
+    .in_enable(in_DiscreteValuesTable_enable),
     .in_variable_index(in_variable_index),
     .in_index_of_the_discrete_value(index_of_the_discrete_value),
     
@@ -83,8 +88,10 @@ module DiscreteRangeRandomizer
     .out_end(out_end)
     );
     
+
+
     
-    initial begin 
+initial begin 
         $monitor   ("time = %t +++ variable_index= %d number_of_discrete_assignments= %d +++ index_of_the_discrete_value= %d   start= %d end=%d",
         $realtime ,
         in_variable_index,

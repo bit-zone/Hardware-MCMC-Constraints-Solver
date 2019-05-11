@@ -10,7 +10,8 @@ module DiscreteValuesTable
      parameter FILE_PATH = "discrete_values.mem"
 )
 (
-     input wire in_clock,
+    input wire in_clock,
+    input wire in_enable,
      
     input [MAX_BIT_WIDTH_OF_VARIABLES_INDEX-1:0 ]in_variable_index,
     input [MAX_BIT_WIDTH_OF_DISCRETE_CHOICES-1:0]in_index_of_the_discrete_value,
@@ -27,8 +28,16 @@ module DiscreteValuesTable
     
     always @(posedge(in_clock))
     begin
+    if(in_enable)
+    begin
         out_start<= discrete_values [discrete_value_address][(MAX_BIT_WIDTH_OF_INTEGER_VARIABLE*2)-1:MAX_BIT_WIDTH_OF_INTEGER_VARIABLE] ;
         out_end<= discrete_values [discrete_value_address][(MAX_BIT_WIDTH_OF_INTEGER_VARIABLE-1):0] ;
+    end
+    else
+        begin
+         out_start<=out_start;
+         out_end<=out_end;
+        end
     end  
     initial 
         begin

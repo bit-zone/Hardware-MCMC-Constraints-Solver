@@ -15,8 +15,8 @@ out_chosen_segment_weight);
     // it should be 1 only at beginning and 0 after beginning .
     input wire in_enable;
     input wire [WIDTH:0] in_seed; // initial value  , CANNOT be zero or negative
-    input wire signed [WIDTH-1:0] in_c_less_than;//c2
-    input wire signed [WIDTH-1:0] in_c_more_than;//c1
+    input wire signed [WIDTH-1:0] in_c_less_than;//y<c2
+    input wire signed [WIDTH-1:0] in_c_more_than;//y>c1
     // minimum and maximum values for the chosen variable
     input wire signed [WIDTH-1:0] in_min_variable;
     input wire signed [WIDTH-1:0] in_max_variable;

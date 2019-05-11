@@ -1,29 +1,14 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 03/25/2019 09:10:33 PM
-// Design Name: 
-// Module Name: Sampler
-// Project Name: MCMC
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
+
 
 // This module takes the from, to , type and weight from the Select Segment module as Input
 // should take the variable index too
 // and outputs a new proposed value for this variable
 
-module Sampler(
+module Sampler
+#( parameter WIDTH=8
+)
+(
      //inputs
    input wire in_clock, // the main clock of the system.
    input wire in_reset,  // if 1 , the module reads the seed value , 
@@ -31,8 +16,8 @@ module Sampler(
    input wire in_enable, // it should be 1 if you want new numbers to be generated every posetive clock edge .
    // if 0 , the output remains like the previous one.
    input wire [7:0] in_seed, // initial value  , CANNOT be zero or negative
-   input wire signed [7:0] in_from, // specifies the minimum value of the target range.
-   input wire signed[7:0] in_to, // specifies the maximum value of the target range. 
+   input wire signed [WIDTH-1:0] in_from, // specifies the minimum value of the target range.
+   input wire signed[WIDTH-1:0] in_to, // specifies the maximum value of the target range. 
    input wire [1:0] in_chosen_segment_type ,// (the choosing segment type) : 3 , 1 ,or 2 .
    input wire signed [7:0] in_chosen_segment_weight,
    // should add the index of variable later
@@ -46,11 +31,11 @@ module Sampler(
     parameter EXPDOWN = 2'd1 ;
     parameter UNIFORM = 2'd3 ;
     
-    reg signed[7:0]min;
-    reg signed[7:0]max;
+    reg signed[WIDTH-1:0]min;
+    reg signed[WIDTH-1:0]max;
     
     
-    always @ (posedge in_clock)
+    always @ (in_chosen_segment_type,in_from,in_to)//(posedge in_clock)
     begin
     case (in_chosen_segment_type)
     
@@ -94,7 +79,9 @@ module Sampler(
     end
     
 
-RandomGenerator  uut (
+RandomGenerator
+#(.WIDTH(WIDTH)) 
+uut (
   .in_clock(in_clock), 
   .in_reset(in_reset),
   .in_enable(in_enable),

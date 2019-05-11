@@ -52,7 +52,7 @@ begin
  $display("output of testing CluaseRegister : ");
 
  end*/
-    ClauseRegister
+    ClauseRegister_IntegerLiteral
     uut(
          .in_clause_coefficients(in_clause_coefficients),
          .in_calause_index(in_calause_index),

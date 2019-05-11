@@ -9,6 +9,7 @@ module DiscreteVariablesSizes
 )
 (   
     input wire in_clock,
+    input wire in_enable,
     
     input [MAX_BIT_WIDTH_OF_VARIABLES_INDEX - 1 : 0] in_variable_index,
     
@@ -22,7 +23,10 @@ module DiscreteVariablesSizes
      
      always @(posedge(in_clock))
      begin
+     if (in_enable)
         number_of_discrete_assignments <= number_of_discrete_variables_table[in_variable_index];
+     else
+        number_of_discrete_assignments <=number_of_discrete_assignments; 
      end
               
     initial

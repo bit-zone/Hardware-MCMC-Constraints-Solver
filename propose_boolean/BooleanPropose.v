@@ -2,17 +2,18 @@
 
 module BooleanPropose
 #(
-    parameter MAX_BIT_WIDTH_OF_VARIABLES_INDEX =2
+// this mainly is = MAX_BIT_WIDTH_OF_ALL_VARIABLES_INDEX
+    parameter MAX_BIT_WIDTH_OF_BOOLEAN_VARIABLES_INDEX =2
 )
 (   
     input  in_clock,
     input in_enable,
-    input [2**MAX_BIT_WIDTH_OF_VARIABLES_INDEX-1:0] in_current_assignment_boolean,//the current values assigned to boolean variables x1,x2,...
+    input [2**MAX_BIT_WIDTH_OF_BOOLEAN_VARIABLES_INDEX-1:0] in_current_assignment_boolean,//the current values assigned to boolean variables x1,x2,...
     
     
-    input [MAX_BIT_WIDTH_OF_VARIABLES_INDEX-1:0] in_variable_to_be_changed_index,//the number of variable to be flipped
+    input [MAX_BIT_WIDTH_OF_BOOLEAN_VARIABLES_INDEX-1:0] in_variable_to_be_changed_index,//the number of variable to be flipped
     
-    output reg [2**MAX_BIT_WIDTH_OF_VARIABLES_INDEX-1:0]  out_new_assignment_Boolean//the new values assigned to the boolean variables
+    output reg [2**MAX_BIT_WIDTH_OF_BOOLEAN_VARIABLES_INDEX-1:0]  out_new_assignment_Boolean//the new values assigned to the boolean variables
     );
 
     integer i ;//index used in the for loop
@@ -21,7 +22,7 @@ module BooleanPropose
     begin
         if (in_enable) 
         begin
-            for(i=0;i<(2**MAX_BIT_WIDTH_OF_VARIABLES_INDEX);i=i+1)
+            for(i=0;i<(2**MAX_BIT_WIDTH_OF_BOOLEAN_VARIABLES_INDEX);i=i+1)
             begin
                 if(in_variable_to_be_changed_index==i)
                 begin
