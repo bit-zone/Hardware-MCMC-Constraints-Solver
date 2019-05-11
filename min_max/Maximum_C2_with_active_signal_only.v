@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module Maximum_with_active_signal_only// we use this module in both c1 and c2 as the biases are already separated with MaximumC1 and MaximumC2 modules
+module Maximum_C2_with_active_signal_only// we use this module in both c1 and c2 as the biases are already separated with MaximumC1 and MaximumC2 modules
 #( parameter NUMBER_SIZE=4 )
 (
 input wire signed [NUMBER_SIZE-1:0]first_number,
