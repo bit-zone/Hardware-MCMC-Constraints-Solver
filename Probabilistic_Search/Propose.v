@@ -7,6 +7,8 @@ parameter MAX_BIT_WIDTH_OF_VARIABLES_INDEX=2,
 parameter MAX_BIT_WIDTH_OF_BOOLEAN_VARIABLES_INDEX = MAX_BIT_WIDTH_OF_VARIABLES_INDEX,
 parameter MAX_BIT_WIDTH_OF_INTEGER_VARIABLE=8,
 
+parameter MAX_BIT_WIDTH_OF_DISCRETE_CHOICES =2,
+
 parameter MAX_BIT_WIDTH_OF_CLAUSES_INDEX=3,
 parameter MAX_BIT_WIDTH_OF_COEFFICIENT=8
 )
@@ -51,12 +53,14 @@ input in_DiscreteValuesTable_enable,
 
 
 /***************sampler signals start*********************/
+//control
 input chosen_variable_is_discrete,//needed to decide the sampler source input
 input in_sampler_enable,
 /***************sampler signals end*********************/
 
 
 /***************outputs starrt*********************/
+output out_no_need_to_sample,
 output [2**MAX_BIT_WIDTH_OF_VARIABLES_INDEX-1:0] out_boolean_proposed_move,
 output [MAX_BIT_WIDTH_OF_INTEGER_VARIABLE-1:0] out_integer_proposed_move
 /***************outputs end*********************/
@@ -97,6 +101,7 @@ assign sampler_input_segment_wight=(chosen_variable_is_discrete)? 0:continuous_s
 
 
 /********************module's output assignment********************/
+assign out_no_need_to_sample=start_discrete_equals_end_discrete;
 assign out_integer_proposed_move=(chosen_variable_is_discrete&start_discrete_equals_end_discrete)?start_discrete:sampler_out_integer_proposed_move;
 
 
@@ -169,7 +174,7 @@ ProposeIntegerContinous
 
 
 Sampler 
-#(.WIDTH(8))
+#(.WIDTH(MAX_BIT_WIDTH_OF_INTEGER_VARIABLE))
 sampler(
       //inputs
 .in_clock(in_clock), // the main clock of the system.
