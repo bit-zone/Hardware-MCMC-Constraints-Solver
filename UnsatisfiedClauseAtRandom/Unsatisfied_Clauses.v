@@ -120,6 +120,17 @@ generate
 
  //check on each clause with the current assignment                 
        OneClauseChecker
+
+                   #(
+                    .MAXIMUM_BIT_WIDTH_OF_INTEGER_COEFFICIENT(MAXIMUM_BIT_WIDTH_OF_INTEGER_COEFFICIENT),//gives us the maximum bitwidth of coefficients in integer literal
+                    .MAXIMUM_BIT_WIDTH_OF_BOOLEAN_COEFFICIENT(MAXIMUM_BIT_WIDTH_OF_BOOLEAN_COEFFICIENT),//gives us the maximum bitwidth of coefficients in boolean literal(it always equals 2)
+                    .MAXIMUM_BIT_WIDTH_OF_INTEGER_VARIABLE_INDEX(MAXIMUM_BIT_WIDTH_OF_INTEGER_VARIABLE_INDEX),//gives us the maximum number of integer variables in clause
+                    .MAXIMUM_BIT_WIDTH_OF_BOOLEAN_VARIABLE_INDEX(MAXIMUM_BIT_WIDTH_OF_BOOLEAN_VARIABLE_INDEX),//gives us the maximum number of boolean variables in clause
+                    .MAXIMUM_BIT_WIDTH_OF_INTEGER_VARIABLE(MAXIMUM_BIT_WIDTH_OF_INTEGER_VARIABLE),//gives us the maximum bitwidth of the value assigned to an integer variable
+                    .MAXIMUM_BIT_WIDTH_OF_BOOLEAN_VARIABLE(MAXIMUM_BIT_WIDTH_OF_BOOLEAN_VARIABLE),//gives us the maximum bitwidth of the value assigned to an integer variable
+                    .MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX(MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX)//gives us the maximum number of clauses                   
+                   )
+       
                   check_on_clause 
                   (
                     .in_boolean_current_assigmnets(in_boolean_assignment),
@@ -149,16 +160,16 @@ for (i=0;i<2**(MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX+1)-1;i=(i/2)+2**(MAXIMUM_BIT_W
          for(j=i;j<(i/2)+2**(MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX)-1;j=j+2)begin : generate_ith_level
            CompareTwoChecker
                          #(
-                   MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX//gives us the maximum number of clauses
+                   .MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX(MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX)//gives us the maximum number of clauses
                            )
            
-             uut
-            (
+           uut
+           (
           .in_clause_1_index(unsatisfied_clauses_index[j]),
           .in_clause_1_satisfied(clause_satisfied[j]), 
           .in_clause_2_index(unsatisfied_clauses_index[j+1]),
           .in_clause_2_satisfied(clause_satisfied[j+1]),
-          .in_setting(1'b0),
+          .in_setting(1'b1),
           .out_clause_index(unsatisfied_clauses_index[(i/2)+2**(MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX)+((j-i)/2)]),
           .out_clause_satisfied(clause_satisfied[(i/2)+2**(MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX)+((j-i)/2)])
          );
@@ -202,5 +213,4 @@ assign index_of_the_clause = unsatisfied_clauses_index[(2**(MAXIMUM_BIT_WIDTH_OF
 assign out_clause_coefficients_integer = clauses_coefficients_integer[index_of_the_clause];
 assign out_clause_coefficients_boolean = clauses_coefficients_boolean[index_of_the_clause];
 
-
- endmodule 
+endmodule 
