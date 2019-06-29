@@ -23,7 +23,7 @@ parameter MAXIMUM_BIT_WIDTH_OF_INTEGER_VARIABLE_INDEX = 1,//gives us the maximum
 parameter MAXIMUM_BIT_WIDTH_OF_BOOLEAN_VARIABLE_INDEX = 1,//gives us the maximum number of boolean variables in clause
 parameter MAXIMUM_BIT_WIDTH_OF_INTEGER_VARIABLE=4,//gives us the maximum bitwidth of the value assigned to an integer variable
 parameter MAXIMUM_BIT_WIDTH_OF_BOOLEAN_VARIABLE=1,//gives us the maximum bitwidth of the value assigned to a bool variable
-parameter MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX = 3//gives us the maximum number of clauses
+parameter MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX = 2//gives us the maximum number of clauses
 )
 
 (
@@ -169,7 +169,7 @@ for (i=0;i<2**(MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX+1)-1;i=(i/2)+2**(MAXIMUM_BIT_W
           .in_clause_1_satisfied(clause_satisfied[j]), 
           .in_clause_2_index(unsatisfied_clauses_index[j+1]),
           .in_clause_2_satisfied(clause_satisfied[j+1]),
-          .in_setting(1'b1),
+          .in_setting(1'b0),
           .out_clause_index(unsatisfied_clauses_index[(i/2)+2**(MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX)+((j-i)/2)]),
           .out_clause_satisfied(clause_satisfied[(i/2)+2**(MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX)+((j-i)/2)])
          );
@@ -207,10 +207,11 @@ FormulaModule formula1
 );
 */
 
-wire index_of_the_clause;
+wire [MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX-1:0] index_of_the_clause;
 
 assign index_of_the_clause = unsatisfied_clauses_index[(2**(MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX+1) -1  )  -1];
 assign out_clause_coefficients_integer = clauses_coefficients_integer[index_of_the_clause];
 assign out_clause_coefficients_boolean = clauses_coefficients_boolean[index_of_the_clause];
+
 
 endmodule 
