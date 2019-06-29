@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module ProposeIntegerContinuous
+module ProposeIntegerContinous
 #(
 
 parameter MAXIMUM_BIT_WIDTH_OF_COEFFICIENT = 8,
@@ -11,23 +11,26 @@ parameter MAX_BIT_WIDTH_OF_CLAUSES_INDEX=3
 (
 input in_clk,
 input in_reset,
-//input in_enable,
-input [MAX_BIT_WIDTH_OF_INTEGER_VARIABLE:0]in_seed,
-// for clause register setup
+input [7:0]in_seed,
+//control signals//
+//// for clause register setup/////////////////////////////////
+input in_clause_registers_write_enable,                     //
+input [MAX_BIT_WIDTH_OF_CLAUSES_INDEX-1:0] in_clause_index,//
+////////////////////////////////////////////////////////////
+input [(2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1:0]in_reduce_enable,
+input in_select_segment_enable,
+
+// setup data
 input [(((2**MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX)+1//for the bias
 )*MAXIMUM_BIT_WIDTH_OF_COEFFICIENT)-1:0]in_clause_coefficients,//coefficients of one clause only
 
-//this vector is with bit width =MAX_BIT_WIDTH_OF_CLAUSES_INDEX+1 to make an extra address to prevent all registers at the same time from writing any coefficients
-input [MAX_BIT_WIDTH_OF_CLAUSES_INDEX:0] in_clause_index,
 
+// run time data
 input [MAX_BIT_WIDTH_OF_INTEGER_VARIABLE*(2**MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX)-1:0]in_assignment_before_move,
-input [MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX-1:0] in_variable_to_be_unchanced_index,
+input [MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX-1:0] in_variable_to_be_unreduced_index,
 
-input [(2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1:0]in_reduce_enable,
 
-//this should be [MAX_BIT_WIDTH_OF_INTEGER_VARIABLE-1:0] but the new assignment here is one of the biases
-//so we have to make MAXIMUM_BIT_WIDTH_OF_COEFFICIENT=MAX_BIT_WIDTH_OF_INTEGER_VARIABLE
-
+//we should make MAXIMUM_BIT_WIDTH_OF_COEFFICIENT=MAX_BIT_WIDTH_OF_INTEGER_VARIABLE
 
 output wire  [1:0] out_chosen_segment_type ,// (the choosing segment type) : 3 , 1 ,or 2 .
 output wire signed [MAX_BIT_WIDTH_OF_INTEGER_VARIABLE-1:0] out_chosen_segment_from,
@@ -52,8 +55,6 @@ wire signed[MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]tree_comparator_biases_for_c2[0
 wire tree_comparator_activations_for_c2[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1]; 
 
 
-//reg signed [MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]C1;//y<C1
-//reg signed [MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]C2;//y>C2
 generate 
 genvar i,j;
 for(i=0;i<(2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX);i=i+1)begin:generate_reduce
@@ -66,6 +67,7 @@ ClauseRegister_IntegerLiteral
  .MAX_BIT_WIDTH_OF_CLAUSES_INDEX(MAX_BIT_WIDTH_OF_CLAUSES_INDEX)
 )
     clause_register_integer_literal(
+         .in_write_enable(in_clause_registers_write_enable),//new edit 22/6/2019/////////////////////////////////////////
          .in_clause_coefficients(in_clause_coefficients),
          .in_clause_index(in_clause_index),
          .in_reset(in_reset),
@@ -82,7 +84,7 @@ ClauseRegister_IntegerLiteral
 (
     .in_coefficients(clauses_coefficients[i]),
     .in_current_assignment(in_assignment_before_move),
-    .in_variable_to_be_unchanged_index(in_variable_to_be_unchanced_index),
+    .in_variable_to_be_unchanged_index(in_variable_to_be_unreduced_index),
     .in_clk(in_clk),
     .in_enable(in_reduce_enable[i]),
     .in_reset(in_reset),
@@ -177,7 +179,7 @@ selectSegment #(
  uut (
   .in_clock(in_clk), 
   .in_reset(in_reset),
-  .in_enable(in_enable),
+  .in_enable(in_select_segment_enable),
   .in_seed(in_seed), 
   .in_c_less_than(tree_comparator_biases_for_c2[((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1]),//y<c2
   .in_c_more_than(tree_comparator_biases_for_c1[((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1]),//y>c1
@@ -191,22 +193,6 @@ selectSegment #(
   .out_chosen_segment_to(out_chosen_segment_to),
   .out_chosen_segment_weight(out_chosen_segment_weight)
  );
-/* 
-always@(posedge(in_clk))begin
-//if state = propose 
-// this state comes from the control unit
-if(in_reset)
-    begin
-    C1 <= {(MAXIMUM_BIT_WIDTH_OF_COEFFICIENT){1'b0}};
-    C2 <= {(MAXIMUM_BIT_WIDTH_OF_COEFFICIENT){1'b0}};
-    end
-else
-    begin
-   
-    C1<=tree_comparator_biases_for_c1[((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
-    C2<=tree_comparator_biases_for_c2[((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
-    end
-end
-*/
+
 
 endmodule
