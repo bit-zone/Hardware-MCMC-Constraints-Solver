@@ -27,7 +27,8 @@ module findNumberOfOnes
    parameter NUMBER_OF_CLAUSES =4,
    parameter MAXIMUM_BIT_WIDTH_OF_CLAUSE_INDEX=2
   )   
-  (   
+  ( 
+    input in_enable, 
     input in_reset,//at posedge of the reset the module output is down to zero
     input in_clk,//general clk
     input [NUMBER_OF_CLAUSES-1:0] A,//the input array
@@ -42,15 +43,16 @@ integer i;//a reg for the for loop
 always@(posedge in_clk )
 begin
 //at posedge clk assign the accumulator to the output
-if(!in_reset)
+if(!in_reset && in_enable)
   begin
   ones = 0;
   for(i=0;i<NUMBER_OF_CLAUSES;i=i+1)   //for all the bits.
           ones = ones + A[i]; //Add the bit to the count.
   end
-//at posedge reset assign zero to the output  
+//at posedge reset assign zero to the output 
+//if module is not enabled assign zero also  
 else
-  ones<=0;  
+  ones=0;  
 end  
 endmodule
    

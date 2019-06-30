@@ -3,12 +3,13 @@
 module propose_corner_point_edited
 #(
 
-parameter MAXIMUM_BIT_WIDTH_OF_COEFFICIENT = 8,
-parameter MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX = 2,
+parameter MAXIMUM_BIT_WIDTH_OF_COEFFICIENT = 4,
+parameter MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX = 1,
 parameter MAX_BIT_WIDTH_OF_INTEGER_VARIABLE=4,
-parameter MAX_BIT_WIDTH_OF_CLAUSES_INDEX=3
+parameter MAX_BIT_WIDTH_OF_CLAUSES_INDEX=2
 )
 (
+input in_enable,
 input in_clk,
 input in_reset,
 // for clause register setup
@@ -30,9 +31,9 @@ wire [((2**MAXIMUM_BIT_WIDTH_OF_VARIABLE_INDEX)+1//for the bias
 )*MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]clauses_coefficients[0:(2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1];
 
 
-wire signed[MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]reduce_out_biases[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
-wire reduce_out_activations[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
-wire reduce_out_sign[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];//the clause is y+c>0 or y+c<0
+wire signed[MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]reduce_out_biases[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)];
+wire reduce_out_activations[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)];
+wire reduce_out_sign[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)];//the clause is y+c>0 or y+c<0
 
 wire signed[MAXIMUM_BIT_WIDTH_OF_COEFFICIENT-1:0]tree_comparator_biases_for_c1[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1];
 wire tree_comparator_activations_for_c1[0:((2**MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1)-1]; 
@@ -71,7 +72,7 @@ ClauseRegister_IntegerLiteral
     .in_current_assignment(in_assignment_before_move),
     .in_variable_to_be_unchanged_index(in_variable_to_be_unchanced_index),
     .in_clk(in_clk),
-    .in_enable(in_reduce_enable[i]),
+    .in_enable(in_reduce_enable[i]&in_enable),
     .in_reset(in_reset),
     .out_Bias(reduce_out_biases[i]),
     .out_Variable_to_be_unchanged_sign(reduce_out_sign[i]),
@@ -139,7 +140,7 @@ end
 
 for (i=0;i<2**(MAX_BIT_WIDTH_OF_CLAUSES_INDEX)-1;i=(i/2)+2**(MAX_BIT_WIDTH_OF_CLAUSES_INDEX-1))begin :generate_secod_level_in_the_tree_for_c2
          for(j=i;j<(i/2)+2**(MAX_BIT_WIDTH_OF_CLAUSES_INDEX-1)-1;j=j+2)begin : generate_ith_level
-             Maximum_C2_with_active_signal_only 
+             Maximum_with_active_signal_only 
              #( .NUMBER_SIZE(MAXIMUM_BIT_WIDTH_OF_COEFFICIENT))
              max_c2(
                  .first_number(tree_comparator_biases_for_c2[j]),

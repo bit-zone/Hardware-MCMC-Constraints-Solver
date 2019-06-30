@@ -32,18 +32,18 @@ module computeGain_tb(
 
     reg in_clk;
     reg in_reset;
-    reg in_enable;
+    reg [(2**MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX)-1:0] in_enable;
     // for clause register setup
     reg [((2**MAXIMUM_BIT_WIDTH_OF_INTEGER_VARIABLE_INDEX)+1//for the bias
     )*MAXIMUM_BIT_WIDTH_OF_INTEGER_COEFFICIENT-1:0]in_clause_coefficients_integer;//coefficients of integer literal for one clause only 
     reg [(MAXIMUM_BIT_WIDTH_OF_BOOLEAN_COEFFICIENT*(2**MAXIMUM_BIT_WIDTH_OF_BOOLEAN_VARIABLE_INDEX))-1 : 0 ] in_clause_coefficients_boolean;//coefficients of boolean literals for one clause only
     reg [MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX-1:0] in_clause_index;//the number of the clause
-    
+    reg in_gain_enable;
     //the assignment to check
     reg [MAXIMUM_BIT_WIDTH_OF_INTEGER_VARIABLE*(2**MAXIMUM_BIT_WIDTH_OF_INTEGER_VARIABLE_INDEX)-1:0]in_integer_assignment_after_move;
     reg [MAXIMUM_BIT_WIDTH_OF_BOOLEAN_VARIABLE*(2**MAXIMUM_BIT_WIDTH_OF_BOOLEAN_VARIABLE_INDEX)-1:0]in_boolean_assignment_after_move;
-    wire [MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX-1:0] out_number_of_satisfied_clauses;
-    
+    wire [MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX:0] out_number_of_satisfied_clauses;
+    wire [2**MAXIMUM_BIT_WIDTH_OF_CLAUSES_INDEX-1:0] satisfied;
     
    ComputeGain
     #(
@@ -64,6 +64,8 @@ module computeGain_tb(
      in_clause_index,
      in_integer_assignment_after_move,
      in_boolean_assignment_after_move,
+     in_gain_enable,
+     satisfied,
     out_number_of_satisfied_clauses  
      );
     
@@ -80,27 +82,28 @@ module computeGain_tb(
     //at first set up the module(set the formula) 
     ////
     in_reset = 0;
-    in_integer_assignment_after_move=12'h111;
-    in_boolean_assignment_after_move=2'b11;
-    in_clause_coefficients_integer =8'hff;
-    in_clause_coefficients_boolean=4'h0;
-    in_clause_index=0;
-    #200;
-    in_clause_coefficients_integer =8'h11;
-    in_clause_coefficients_boolean=4'hf;
-    in_clause_index=1;
-    #200;
-    in_clause_coefficients_integer =8'hf1;
-    in_clause_coefficients_boolean=4'hf;
-    in_clause_index=2;    
-    #200;
-    in_clause_coefficients_integer =8'h11;
-    in_clause_coefficients_boolean=4'h0;
-    in_clause_index=3;
+    in_integer_assignment_after_move=8'h11;
+    in_boolean_assignment_after_move=2'b10;
+    in_clause_coefficients_integer =12'h411;
+        in_clause_coefficients_boolean=4'b1111;
+        in_clause_index=0;
+        #200;
+        in_clause_coefficients_integer =12'h511;
+        in_clause_coefficients_boolean=4'b1011;
+        in_clause_index=1;
+        #200;
+        in_clause_coefficients_integer =12'h611;
+        in_clause_coefficients_boolean=4'b1011;
+        in_clause_index=2;    
+        #200;
+        in_clause_coefficients_integer =12'h311;
+        in_clause_coefficients_boolean=4'hf;
+        in_clause_index=3;
     /////
     //after seting up the module ,enable it  
     #200;
-    in_enable=1;
+    in_enable=4'b1111;
+    in_gain_enable=1;
       
     //#400;
     //in_reset=1; 
