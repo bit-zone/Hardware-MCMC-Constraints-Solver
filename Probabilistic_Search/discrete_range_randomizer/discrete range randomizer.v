@@ -11,22 +11,18 @@ module DiscreteRangeRandomizer
     
 )
 (
-
-//inputs for random generator
     input wire in_clock,
-	///////////////////////////////////////////////////////////////////////
-	//enables
-    input wire in_DiscreteVariablesSizes_enable,
-    input wire in_random_enable,
-    input wire in_DiscreteValuesTable_enable,
-	///////////////////////////////////////////////////////////////
-    input wire [1:0]in_seed,
+//inputs for random generator
+    input wire [7:0]in_seed,
     input wire in_reset,
     //this is for the random generator seed initialization
     // if 1 , the module reads the seed value , 
-    // it should be 1 only at beginning and 0 after beginning .
+    // it should be 1 only at beginning and 0 after beginning 
     
-    
+    input wire in_DiscreteVariablesSizes_enable,
+    input wire in_random_enable,
+    input wire in_DiscreteValuesTable_enable,
+     
     input wire [MAX_BIT_WIDTH_OF_VARIABLES_INDEX-1:0 ]in_variable_index,
     
     output wire [MAX_BIT_WIDTH_OF_INTEGER_VARIABLE-1:0] out_start,
@@ -43,7 +39,7 @@ module DiscreteRangeRandomizer
     
     assign out_equal=(out_start==out_end)?1'b1:1'b0;
     
-    DiscreteVariablesSizes // ---------------> need input_read_enable 
+    DiscreteVariablesSizes
     #(//module parameters
         .MAX_BIT_WIDTH_OF_VARIABLES_INDEX (MAX_BIT_WIDTH_OF_VARIABLES_INDEX),
         .MAX_BIT_WIDTH_OF_DISCRETE_CHOICES (MAX_BIT_WIDTH_OF_DISCRETE_CHOICES),
@@ -53,7 +49,9 @@ module DiscreteRangeRandomizer
     )
     discrete_variables_sizes(
         .in_clock(in_clock),
+        
         .in_enable(in_DiscreteVariablesSizes_enable),
+        
         .in_variable_index(in_variable_index),
         .out_number_of_discrete_assignments(number_of_discrete_assignments)
     );
@@ -66,13 +64,14 @@ module DiscreteRangeRandomizer
          .in_clock(in_clock), 
          .in_reset(in_reset),
          .in_enable(in_random_enable),
+         
          .in_min(2'b0),
          .in_max(number_of_discrete_assignments),
          .in_seed(in_seed), 
          .out_random(index_of_the_discrete_value)
     );
     
-    DiscreteValuesTable  // ---------------> need input_read_enable 
+    DiscreteValuesTable 
     #(//module parameters
         .MAX_BIT_WIDTH_OF_INTEGER_VARIABLE(MAX_BIT_WIDTH_OF_INTEGER_VARIABLE),
         .MAX_BIT_WIDTH_OF_VARIABLES_INDEX (MAX_BIT_WIDTH_OF_VARIABLES_INDEX),
@@ -81,8 +80,10 @@ module DiscreteRangeRandomizer
        //for exampl x inside [1,3,5,7,9,0,12,34,76,65,56,77,88,99,[100:200],[40:60]]
        .FILE_PATH(DISCRETE_VALUES_FILE_PATH)
     ) 
-    discrete_values_table(
+    discrete_values_table
+    (
     .in_clock(in_clock),
+    
     .in_enable(in_DiscreteValuesTable_enable),
     .in_variable_index(in_variable_index),
     .in_index_of_the_discrete_value(index_of_the_discrete_value),

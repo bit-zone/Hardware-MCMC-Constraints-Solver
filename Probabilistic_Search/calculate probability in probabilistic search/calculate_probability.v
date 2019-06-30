@@ -30,7 +30,9 @@
  
 */
 
-module calculateProbability(
+module calculateProbability#(
+parameter MAX_BIT_WIDTH_OF_CLAUSES_INDEX=3
+)(
     //inputs
     input wire in_clock, 
     // the main clock of the system.
@@ -41,15 +43,15 @@ module calculateProbability(
     // it should be 1 if you want new numbers to be generated every posetive clock edge .
     // if 0 , the output remains like the previous one.
     input wire [7:0] in_seed, // initial value  , CANNOT be zero or negative
-    input wire [7:0] in_u,//number of failed clauses (before) the new proposed value.
-    input wire [7:0] in_v,//number of failed clauses (after) the new proposed value.
+    input wire [MAX_BIT_WIDTH_OF_CLAUSES_INDEX:0] in_u,//number of failed clauses (before) the new proposed value.
+    input wire [MAX_BIT_WIDTH_OF_CLAUSES_INDEX:0] in_v,//number of failed clauses (after) the new proposed value.
   //ouputs
     output wire  out_p 
     // the random number 
     );
 
 wire signed [7:0] random_number;
-wire signed [7:0] u_minus_v;
+wire signed [MAX_BIT_WIDTH_OF_CLAUSES_INDEX:0] u_minus_v;
 
 assign u_minus_v = in_u-in_v;
 assign out_p = ( u_minus_v >= 0 ) ? 8'd1 :
